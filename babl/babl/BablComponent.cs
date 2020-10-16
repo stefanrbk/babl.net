@@ -34,15 +34,15 @@ namespace babl
                                     string doc = "")
         {
             var value = db.Exists(id, name);
-            if (id != 0 && value is not null && db.Exists(name) is not null)
-                throw new Exception($"Trying to reregister BablComponent '{name}' with different id!");
+            if (id is not 0 && value is not null && db.Exists(name) is not null)
+                Fatal.AlreadyRegistered(name, nameof(BablComponent));
 
             if (value is not null)
             {
                 // There is an instance already registerd by the required id/name,
                 // returning the preexistent one instead if it doesn't differ.
                 if (!((BablComponent)value).Equals(hasLuma, hasChroma, hasAlpha))
-                    throw new Exception($"BablComponent '{name}' already registerd with different attributes!");
+                    Fatal.ExistsAsDifferentValue(name, nameof(BablComponent));
                 return value;
             }
             value = new BablComponent(name, id, hasLuma, hasChroma, hasAlpha, doc);
@@ -53,7 +53,9 @@ namespace babl
             return value;
         }
 
-        public bool Equals(bool hasLuma, bool hasChroma, bool hasAlpha) =>
+        public bool Equals(bool hasLuma,
+                           bool hasChroma,
+                           bool hasAlpha) =>
             HasLuma == hasLuma &&
             HasChroma == hasChroma &&
             HasAlpha == hasAlpha;
@@ -64,17 +66,23 @@ namespace babl
         public override int GetHashCode() =>
             HashCode.Combine(HasLuma, HasChroma, HasAlpha);
 
-        public static Babl? Find(string name)
+        public static Babl Find(string name)
         {
             if (logOnNameLookups)
-                Log($"\"{name}\": looking up");
-            if (db is null)
-                Error($"\"{name}\": you must call Babl.Init first");
+                Logging.LookingUp(name);
             var babl = db.Exists(name);
 
             if (babl is null)
-                Error($"\"{name}\": not found");
+                Fatal.NotFound(name);
 
+            return babl;
+        }
+
+        public static Babl Find(int id)
+        {
+            var babl = db.Exists(id);
+            if (babl is null)
+                Fatal.NotFound(id.ToString());
             return babl;
         }
     }
