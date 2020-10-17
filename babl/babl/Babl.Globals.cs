@@ -7,7 +7,7 @@ namespace babl
 {
     public abstract partial class Babl
     {
-        internal static bool logOnNameLookups = false;
+        internal static bool logOnNameLookups = true;
 
         internal static Babl? BABL(object? obj) =>
             obj as Babl;
@@ -29,5 +29,9 @@ namespace babl
                 Environment.Exit(-1);
             }
         }
+
+        // DoubleVectorFormat from babl-type.c
+
+        // TypeIsSymmetric from babl-type.c
     }
 }

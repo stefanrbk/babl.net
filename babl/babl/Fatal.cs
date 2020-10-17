@@ -29,6 +29,6 @@ namespace babl
                  [CallerMemberName] string memberName = "",
                    [CallerFilePath] string filePath = "",
                  [CallerLineNumber] int lineNumber = 0) =>
-            Babl.Error($"\"{name}\": not found");
+            Babl.Error($"\"{name}\": not found", memberName, filePath, lineNumber);
     }
 }

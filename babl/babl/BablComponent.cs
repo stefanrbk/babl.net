@@ -10,6 +10,7 @@ namespace babl
         internal bool HasLuma { get; set; }
         internal bool HasChroma { get; set; }
         internal bool HasAlpha { get; set; }
+        internal override BablClassType ClassType => BablClassType.Component;
 
         private BablComponent(string name,
                               int id,
@@ -19,7 +20,6 @@ namespace babl
                               string doc)
         {
             Name = name;
-            ClassType = BablClassType.Component;
             Id = id;
             Doc = doc;
             HasLuma = hasLuma;
@@ -34,7 +34,7 @@ namespace babl
                                     string doc = "")
         {
             var value = db.Exists(id, name);
-            if (id is not 0 && value is not null && db.Exists(name) is not null)
+            if (id is not 0 && value is null && db.Exists(name) is not null)
                 Fatal.AlreadyRegistered(name, nameof(BablComponent));
 
             if (value is not null)
@@ -66,7 +66,7 @@ namespace babl
         public override int GetHashCode() =>
             HashCode.Combine(HasLuma, HasChroma, HasAlpha);
 
-        public static Babl Find(string name)
+        internal static Babl Find(string name)
         {
             if (logOnNameLookups)
                 Logging.LookingUp(name);
@@ -78,7 +78,7 @@ namespace babl
             return babl;
         }
 
-        public static Babl Find(int id)
+        internal static Babl Find(int id)
         {
             var babl = db.Exists(id);
             if (babl is null)

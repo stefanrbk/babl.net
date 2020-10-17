@@ -30,10 +30,8 @@ namespace babl
             }
         }
 
-        //public static Babl? Type(string name)
-        //{
-
-        //}
+        public static Babl Type(string name) =>
+            BablType.Find(name);
 
         //public static Babl? Sampling(int horizontal, int vertical)
         //{
@@ -172,15 +170,11 @@ namespace babl
 
         //}
 
-        //public static Babl? CreateType(params object[] args)
-        //{
+        public static Babl CreateType(string name, int id = 0, int bits = 0, string doc = "") =>
+            BablType.Create(name, id, bits, doc);
 
-        //}
-
-        //public static Babl? CreateComponent(params object[] args)
-        //{
-
-        //}
+        public static Babl CreateComponent(string name, int id, bool hasLuma = false, bool hasChroma = false, bool hasAlpha = false, string doc = "") =>
+            BablComponent.Create(name, id, hasLuma, hasChroma, hasAlpha, doc);
 
         //public static Babl? CreateModel(params object[] args)
         //{

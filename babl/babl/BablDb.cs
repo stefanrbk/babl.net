@@ -7,12 +7,12 @@ namespace babl
 {
     internal class BablDb: IEnumerable<Babl>
     {
-        private static IEqualityComparer<string> comparer = new StringComparer();
+        private static readonly IEqualityComparer<string> comparer = new StringComparer();
 
-        private Dictionary<string, Babl> byName = new Dictionary<string, Babl>(comparer);
-        private Dictionary<int, Babl> byId = new Dictionary<int, Babl>();
-        private List<Babl> babls = new List<Babl>();
-        private object mutex = new object();
+        private readonly Dictionary<string, Babl> byName = new Dictionary<string, Babl>(comparer);
+        private readonly Dictionary<int, Babl> byId = new Dictionary<int, Babl>();
+        private readonly List<Babl> babls = new List<Babl>();
+        private readonly object mutex = new object();
 
         public Babl Find(string name) =>
             byName[name];

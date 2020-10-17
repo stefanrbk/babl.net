@@ -13,6 +13,6 @@ namespace babl
                   [CallerMemberName] string memberName = "",
                     [CallerFilePath] string filePath = "",
                   [CallerLineNumber] int lineNumber = 0) =>
-            Babl.Log($"\"{name}\": looking up");
+            Babl.Log($"\"{name}\": looking up", memberName, filePath, lineNumber);
     }
 }

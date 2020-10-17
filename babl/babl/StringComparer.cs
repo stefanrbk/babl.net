@@ -7,7 +7,7 @@ namespace babl
     internal class StringComparer : IEqualityComparer<string>
     {
         public bool Equals([AllowNull] string x, [AllowNull] string y) =>
-            GetHashCode(x) == GetHashCode(y);
+            GetHashCode(x ?? "") == GetHashCode(y ?? "");
 
         public int GetHashCode([DisallowNull] string obj)
         {

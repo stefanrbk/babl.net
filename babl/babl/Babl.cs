@@ -10,7 +10,7 @@ namespace babl
         internal const int Magic = 0xbab100;
 
         internal string Name { get; set; } = "";
-        internal BablClassType ClassType { get; set; }
+        internal abstract BablClassType ClassType { get; }
         internal int Id { get; set; }
         internal string Doc { get; set; } = "";
     }

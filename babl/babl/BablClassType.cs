@@ -4,5 +4,6 @@
     {
         Unknown = Babl.Magic,
         Component,
+        Type,
     }
 }
