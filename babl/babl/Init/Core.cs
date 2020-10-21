@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace babl.Init
 {
-    internal static class Core
+    internal static partial class Core
     {
         public static void Init()
         {
@@ -15,6 +15,7 @@ namespace babl.Init
             _ = BablComponent.Create("B", Ids.Blue, hasLuma: true, hasChroma: true);
             _ = BablComponent.Create("A", Ids.Alpha, hasAlpha: true);
             _ = BablComponent.Create("PAD", Ids.Padding);
+            TypeU8Init();
         }
     }
 }
