@@ -92,8 +92,11 @@ namespace babl
             return babl;
         }
 
-        public override IEnumerator<Babl> GetEnumerator() =>
-            db.GetEnumerator();
+        public static void ForEach(Action<Babl> action)
+        {
+            foreach (var entry in db)
+                action(entry);
+        }
     }
 
     internal class BablTypeInteger : BablType

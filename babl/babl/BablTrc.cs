@@ -392,10 +392,12 @@ namespace babl
             LutSize == lutSize &&
             Gamma == gamma;
 
-        public override IEnumerator<Babl> GetEnumerator() =>
-            (IEnumerator<Babl>)(from val in trcDb
-                                where val is not null
-                                select val);
+        public static void ForEach(Action<Babl> action)
+        {
+            foreach (var entry in trcDb)
+                if (entry is not null)
+                    action(entry);
+        }
 
         public static Babl? FormulaSrgb(double g, double a, double b, double c, double d, double e, double f)
         {

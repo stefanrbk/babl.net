@@ -38,6 +38,8 @@ namespace babl
 
         public static Babl Type(string name) =>
             BablType.Find(name);
+        public static void TypeForEach(Action<Babl> action) =>
+            BablType.ForEach(action);
 
         //public static Babl? Sampling(int horizontal, int vertical)
         //{
@@ -46,6 +48,8 @@ namespace babl
 
         public static Babl Component(string name) =>
             BablComponent.Find(name);
+        public static void ComponentForEach(Action<Babl> action) =>
+            BablComponent.ForEach(action);
 
         //public static Babl? Model(string name)
         //{
@@ -264,6 +268,9 @@ namespace babl
 
         public static Babl? Trc(string name) =>
             BablTrc.Find(name);
+
+        public static void TrcForEach(Action<Babl> action) =>
+            BablTrc.ForEach(action);
 
         //public static Babl? SpaceWithTrc(Babl space, Babl trc)
         //{
