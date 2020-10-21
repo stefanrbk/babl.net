@@ -60,6 +60,13 @@ namespace babl
         public static void ComponentForEach(Action<Babl> action) =>
             BablComponent.ForEach(action);
 
+        public static Babl Conversion(string name) =>
+            BablConversion.Find(name);
+        public static Babl Conversion(int id) =>
+            BablConversion.Find(id);
+        public static void ConversionForEach(Action<Babl> action) =>
+            BablConversion.ForEach(action);
+
         //public static Babl? Model(string name)
         //{
 
