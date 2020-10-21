@@ -28,6 +28,7 @@ namespace babl.Init
             TypeU15Init();
             TypeHalfInit();
             TypeU8Init();
+            TypeU16Init();
         }
     }
 }
