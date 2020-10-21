@@ -15,5 +15,14 @@ namespace babl
             $"Name: \"{Name}\"\n" +
             $"Type: {ClassType}\n" +
             $"Id: {Id}" + (!string.IsNullOrEmpty(Doc) ? $"\nDoc: {Doc}" : "");
+
+        internal BablType? AsType =>
+            this as BablType;
+        internal BablComponent? AsComponent =>
+            this as BablComponent;
+        internal BablConversion? AsConversion =>
+            this as BablConversion;
+        internal BablTrc? AsTrc =>
+            this as BablTrc;
     }
 }
