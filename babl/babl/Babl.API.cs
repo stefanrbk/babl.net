@@ -17,7 +17,7 @@ namespace babl
             {
                 if (refCount++ == 0)
                 {
-                    // Inits go here
+                    BablTrc.Init();
                 }
             }
         }
