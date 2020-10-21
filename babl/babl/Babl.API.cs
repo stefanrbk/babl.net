@@ -1,4 +1,6 @@
-﻿using System;
+﻿using babl.Init;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +19,8 @@ namespace babl
             {
                 if (refCount++ == 0)
                 {
-                    BablTrc.Init();
+                    //BablTrc.Init();
+                    Core.Init();
                 }
             }
         }
