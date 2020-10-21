@@ -7,6 +7,10 @@ namespace babl
 {
     public abstract partial class Babl
     {
+        internal const int Magic = 0xbab100;
+        internal const double AlphaFloor = 1 / 65536.0;
+        internal const float AlphaFloorF = 1 / 65536.0f;
+
         internal static bool logOnNameLookups = true;
 
         internal static Babl? BABL(object? obj) =>

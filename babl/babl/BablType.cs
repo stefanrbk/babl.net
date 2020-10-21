@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace babl
 {
@@ -70,6 +71,9 @@ namespace babl
                 Fatal.NotFound(id.ToString());
             return babl;
         }
+
+        public override IEnumerator<Babl> GetEnumerator() =>
+            db.GetEnumerator();
     }
 
     internal class BablTypeInteger : BablType

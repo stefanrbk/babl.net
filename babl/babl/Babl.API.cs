@@ -8,6 +8,9 @@ namespace babl
 {
     public abstract partial class Babl
     {
+        private static volatile int refCount;
+        private static readonly object refCountLock = new object();
+
         public static void Init()
         {
             lock (refCountLock)
@@ -253,15 +256,11 @@ namespace babl
 
         //}
 
-        //public static Babl? TrcGamma(double gamma)
-        //{
+        public static Babl? TrcGamma(double gamma) =>
+            BablTrc.FormulaGamma(gamma);
 
-        //}
-
-        //public static Babl? Trc(string name)
-        //{
-
-        //}
+        public static Babl? Trc(string name) =>
+            BablTrc.Find(name);
 
         //public static Babl? SpaceWithTrc(Babl space, Babl trc)
         //{

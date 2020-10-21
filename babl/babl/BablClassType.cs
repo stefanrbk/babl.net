@@ -5,5 +5,8 @@
         Unknown = Babl.Magic,
         Component,
         Type,
+        Model,
+        Space,
+        Trc,
     }
 }
