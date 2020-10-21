@@ -62,9 +62,9 @@ namespace babl.Init
         {
             CreateType("float", id: Float, bits: 32, doc: "IEEE 754 single precision");
 
-            CreateConversion(Conversion(Float), Conversion(Ids.Double), plane: ConvertFloatDouble);
-            CreateConversion(Conversion(Ids.Double), Conversion(Float), plane: ConvertDoubleFloat);
-            CreateConversion(Conversion(Float), Conversion(Float), plane: ConvertFloatFloat);
+            CreateConversion(Type(Float), Type(Ids.Double), plane: ConvertFloatDouble);
+            CreateConversion(Type(Ids.Double), Type(Float), plane: ConvertDoubleFloat);
+            CreateConversion(Type(Float), Type(Float), plane: ConvertFloatFloat);
 
         }
     }
