@@ -38,6 +38,8 @@ namespace babl
 
         public static Babl Type(string name) =>
             BablType.Find(name);
+        public static Babl Type(int id) =>
+            BablType.Find(id);
         public static void TypeForEach(Action<Babl> action) =>
             BablType.ForEach(action);
 
@@ -48,6 +50,8 @@ namespace babl
 
         public static Babl Component(string name) =>
             BablComponent.Find(name);
+        public static Babl Component(int id) =>
+            BablComponent.Find(id);
         public static void ComponentForEach(Action<Babl> action) =>
             BablComponent.ForEach(action);
 
@@ -145,10 +149,8 @@ namespace babl
 
         //}
 
-        //public static string GetName(Babl babl)
-        //{
-
-        //}
+        public static string GetName(Babl babl) =>
+            babl.Name;
 
         //public static bool FormatHasAlpha(Babl format)
         //{
