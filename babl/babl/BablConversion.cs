@@ -18,11 +18,6 @@ namespace babl
         internal override BablClassType ClassType => type;
         private readonly BablClassType type = BablClassType.Conversion;
 
-        internal delegate void FuncDispatch(Babl babl, object src, object dst, long num, object userData);
-        internal delegate void FuncPlane(BablConversion conversion, object src, object dst, int srcPitch, int dstPitch, long num, object userData);
-        internal delegate void FuncLinear(Babl conversion, object src, object dst, long num, object userData);
-        internal delegate void FuncPlanar(Babl conversion, int srcBands, object[] src, int[] srcPitch, int dstBands, object[] dst, int[] dstPitch, long num, object userData);
-
         internal Babl Source { get; set; }
         internal Babl Destination { get; set; }
         internal FuncDispatch Dispatch { get; set; } = null!;

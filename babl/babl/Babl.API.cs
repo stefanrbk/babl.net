@@ -13,6 +13,11 @@ namespace babl
         private static volatile int refCount;
         private static readonly object refCountLock = new object();
 
+        public delegate void FuncDispatch(Babl babl, object src, object dst, long num, object userData);
+        public delegate void FuncPlane(Babl conversion, object src, object dst, int srcPitch, int dstPitch, long num, object userData);
+        public delegate void FuncLinear(Babl conversion, object src, object dst, long num, object userData);
+        public delegate void FuncPlanar(Babl conversion, int srcBands, object[] src, int[] srcPitch, int dstBands, object[] dst, int[] dstPitch, long num, object userData);
+
         public static void Init()
         {
             lock (refCountLock)
@@ -208,10 +213,15 @@ namespace babl
 
         //}
 
-        //public static Babl? CreateConversion(params object[] args)
-        //{
-
-        //}
+        public static Babl? CreateConversion(Babl source,
+                                             Babl destination,
+                                             int id = 0,
+                                             object? data = null,
+                                             bool allowCollisions = false,
+                                             FuncLinear? linear = null,
+                                             FuncPlane? plane = null,
+                                             FuncPlanar? planar = null) =>
+            BablConversion.Create(source, destination, id, data, allowCollisions, linear, plane, planar);
 
         //public static Babl? ConversionGetSourceSpace(Babl conversion)
         //{
