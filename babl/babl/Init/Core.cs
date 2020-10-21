@@ -11,19 +11,15 @@ namespace babl.Init
         public static void Init()
         {
             Babl.logOnNameLookups = true;
-            InitTypes();
 
-            _ = BablComponent.Create("R", Ids.Red, hasLuma: true, hasChroma: true);
-            _ = BablComponent.Create("G", Ids.Green, hasLuma: true, hasChroma: true);
-            _ = BablComponent.Create("B", Ids.Blue, hasLuma: true, hasChroma: true);
-            _ = BablComponent.Create("A", Ids.Alpha, hasAlpha: true);
-            _ = BablComponent.Create("PAD", Ids.Padding);
+            InitTypes();
 
             Babl.logOnNameLookups = false;
         }
 
         private static void InitTypes()
         {
+            TypeDoubleInit();
             TypeFloatInit();
             TypeU15Init();
             TypeHalfInit();

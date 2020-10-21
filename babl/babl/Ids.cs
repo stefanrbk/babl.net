@@ -16,6 +16,7 @@ namespace babl
         public const int U32 = 103;
         public const int Half = 104;
         public const int Float = 105;
+        public const int Double = 106;
 
         public const int U8Luma = 108;
         public const int U8Chroma = 109;
