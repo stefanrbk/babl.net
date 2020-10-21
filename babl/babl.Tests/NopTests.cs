@@ -18,9 +18,14 @@ namespace babl.Tests
         {
             Babl.Init();
 
+            Console.WriteLine("Types");
             Babl.TypeForEach(Write);
+            Console.WriteLine("Components");
             Babl.ComponentForEach(Write);
+            Console.WriteLine("TRCs");
             Babl.TrcForEach(Write);
+            Console.WriteLine("Conversions");
+            Babl.ConversionForEach(Write);
 
             Babl.Exit();
         }
