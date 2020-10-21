@@ -22,6 +22,7 @@ namespace babl.Init
         private static void InitTypes()
         {
             TypeFloatInit();
+            TypeHalfInit();
             TypeU8Init();
         }
     }
