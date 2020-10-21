@@ -10,7 +10,7 @@ namespace babl.Init
 {
     internal static partial class Core
     {
-        public static void TypeFloatInit()
+        private static void TypeFloatInit()
         {
             CreateType("float", id: Float, bits: 32, doc: "IEEE 754 single precision");
         }

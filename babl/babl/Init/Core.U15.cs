@@ -10,7 +10,7 @@ namespace babl.Init
 {
     internal static partial class Core
     {
-        public static void TypeU15Init()
+        private static void TypeU15Init()
         {
             logOnNameLookups = false;
 

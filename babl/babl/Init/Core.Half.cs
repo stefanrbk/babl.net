@@ -10,7 +10,7 @@ namespace babl.Init
 {
     internal static partial class Core
     {
-        public static void TypeHalfInit()
+        private static void TypeHalfInit()
         {
             CreateType("half", id: Ids.Half, bits: 16, doc: "IEEE 754 half precision.");
         }

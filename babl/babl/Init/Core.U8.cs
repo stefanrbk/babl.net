@@ -10,7 +10,7 @@ namespace babl.Init
 {
     internal static partial class Core
     {
-        public static void TypeU8Init()
+        private static void TypeU8Init()
         {
             CreateType("u8", id: U8, bits: 8, doc: "byte, 8 bit unsigned integer, values from 0-255");
             CreateType("u8-luma", id: U8Luma, bits: 8, doc: "8 bit unsigned integer, valuers from 16-235");
