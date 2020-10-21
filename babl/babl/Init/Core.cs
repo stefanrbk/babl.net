@@ -10,11 +10,18 @@ namespace babl.Init
     {
         public static void Init()
         {
+            InitTypes();
+
             _ = BablComponent.Create("R", Ids.Red, hasLuma: true, hasChroma: true);
             _ = BablComponent.Create("G", Ids.Green, hasLuma: true, hasChroma: true);
             _ = BablComponent.Create("B", Ids.Blue, hasLuma: true, hasChroma: true);
             _ = BablComponent.Create("A", Ids.Alpha, hasAlpha: true);
             _ = BablComponent.Create("PAD", Ids.Padding);
+        }
+
+        private static void InitTypes()
+        {
+            TypeFloatInit();
             TypeU8Init();
         }
     }
