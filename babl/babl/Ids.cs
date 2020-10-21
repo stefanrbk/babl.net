@@ -13,7 +13,7 @@ namespace babl
         public const int TypeBase = 100;
         public const int U8 = 101;
         public const int U16 = 102;
-
+        public const int U32 = 103;
         public const int Half = 104;
         public const int Float = 105;
 
