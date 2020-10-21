@@ -16,6 +16,12 @@ namespace babl
         internal static Babl Create(string name,
                                     int id,
                                     int bits,
+                                    bool integer,
+                                    bool unsigned,
+                                    long min,
+                                    long max,
+                                    double minVal,
+                                    double maxVal,
                                     string doc = "")
         {
             var value = db.Exists(id, name);
@@ -30,14 +36,28 @@ namespace babl
                     Fatal.ExistsAsDifferentValue(name, nameof(BablType));
                 return value;
             }
-
-            value = new BablType()
-            {
-                Name = name,
-                Id = id,
-                Bits = bits,
-                Doc = doc
-            };
+            value = integer
+                ? new BablTypeInteger()
+                {
+                    Name = name,
+                    Id = id,
+                    Bits = bits,
+                    Doc = doc,
+                    IsSigned = !unsigned,
+                    Max = max,
+                    Min = min,
+                    MaxValue = maxVal,
+                    MinValue = minVal
+                }
+                : new BablType()
+                {
+                    Name = name,
+                    Id = id,
+                    Bits = bits,
+                    Doc = doc,
+                    MinValue = minVal,
+                    MaxValue = maxVal
+                };
             db.Insert(value);
             return value;
         }

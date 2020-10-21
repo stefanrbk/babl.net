@@ -173,8 +173,8 @@ namespace babl
 
         //}
 
-        public static Babl CreateType(string name, int id = 0, int bits = 0, string doc = "") =>
-            BablType.Create(name, id, bits, doc);
+        public static Babl CreateType(string name, int id = 0, int bits = 0, bool integer = false, bool unsigned = false, long min = 0, long max = 0, double minVal = 0, double maxVal = 0, string doc = "") =>
+            BablType.Create(name, id, bits, integer, unsigned, min, max, minVal, maxVal, doc);
 
         public static Babl CreateComponent(string name, int id, bool hasLuma = false, bool hasChroma = false, bool hasAlpha = false, string doc = "") =>
             BablComponent.Create(name, id, hasLuma, hasChroma, hasAlpha, doc);
