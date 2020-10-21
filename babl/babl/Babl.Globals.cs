@@ -34,6 +34,13 @@ namespace babl
             }
         }
 
+        internal static bool IsBabl(object? obj) =>
+            obj is Babl babl && IsClassTypeValid(babl.ClassType);
+
+        internal static bool IsClassTypeValid(BablClassType type) =>
+            type is >= BablClassType.Type and <= BablClassType.Sky;
+
+
         // DoubleVectorFormat from babl-type.c
 
         // TypeIsSymmetric from babl-type.c
