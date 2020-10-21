@@ -7,11 +7,12 @@ namespace babl
     {
         private readonly static BablDb db = new BablDb();
         internal const double Tolerance = 1e-9;
+        internal override BablClassType ClassType => BablClassType.Type;
 
         internal int Bits { get; set; }
         internal double MinValue { get; set; }
         internal double MaxValue { get; set; }
-        internal override BablClassType ClassType => BablClassType.Type;
+        internal List<BablConversion>? FromList { get; set; }
 
         internal static Babl Create(string name,
                                     int id,
