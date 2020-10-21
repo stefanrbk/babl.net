@@ -1,4 +1,4 @@
-name: "Build, Test, Deploy"
+name: Build, Test, Deploy
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
