@@ -14,7 +14,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -27,6 +30,6 @@ jobs:
     - name: Build
       run: dotnet build '${{ env.SOLUTION_PATH }}' --configuration Release --no-restore
     - name: Test
-      run: dotnet test '${{ env.SOLUTION_PATH }}' --no-restore --verbosity minimal
+      run: dotnet test '${{ env.SOLUTION_PATH }}' --no-restore --verbosity normal
     - name: Pack
       run: dotnet pack '${{ env.SOLUTION_PATH }}' --output './nuget-packages' --verbosity minimal --configuration Release --no-build
