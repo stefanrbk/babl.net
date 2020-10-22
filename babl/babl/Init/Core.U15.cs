@@ -10,183 +10,54 @@ namespace babl.Init
 {
     internal static partial class Core
     {
+        private const ushort U15MaxUshort = 32768;
+        private const ushort U15MinUshort = 0;
+        private const double U15MaxDouble = 1.0;
+        private const double U15MinDouble = 0.0;
+        private const float U15MaxFloat = 1.0f;
+        private const float U15MinFloat = 0.0f;
+        private static Tdst Scale<Tsrc, Tdst>(Tsrc value,
+                                              Tsrc minSrc,
+                                              Tsrc maxSrc,
+                                              Tdst minDst,
+                                              Tdst maxDst,
+                                              Func<Tsrc, Tdst> conversion) where Tsrc : IComparable
+                                                                           where Tdst : IComparable
+        {
+            if (value.CompareTo(minSrc) < 0)
+                return minDst;
+            if (value.CompareTo(maxSrc) > 0)
+                return maxDst;
+            return conversion(value);
+        }
         private static double rint(double value) =>
             Math.Floor(value + 0.5);
-        private static void ConvertDoubleU15Scaled(Babl _,
-                                                   double minVal,
-                                                   double maxVal,
-                                                   int min,
-                                                   int max,
-                                                   object src,
-                                                   object dst,
-                                                   int srcPitch,
-                                                   int dstPitch,
-                                                   long num)
-        {
-            if (src is ReadOnlyMemory<double> srcMem &&
-                dst is Memory<ushort> dstMem)
-            {
-                var srcSpan = srcMem.Span;
-                var dstSpan = dstMem.Span;
 
-                while (num-- is > 0)
-                {
-                    var dval = srcSpan[0];
-                    ushort u15val;
+        private static void ConvertU15Double(Babl _1, object src, object dst, int srcPitch, int dstPitch, 
+                                             long num, object? _2) =>
+                Convert<ushort, double>(src, dst, srcPitch, dstPitch, num, ScaleU15Double);
 
-                    if (dval < minVal)
-                        u15val = (ushort)min;
-                    if (dval > maxVal)
-                        u15val = (ushort)max;
-                    else u15val = (ushort)rint((dval - minVal) / (maxVal - minVal) * (max - min) + min);
+        private static void ConvertDoubleU15(Babl _1, object src, object dst, int srcPitch, int dstPitch,
+                                             long num, object? _2) =>
+            Convert<double, ushort>(src, dst, srcPitch, dstPitch, num, ScaleDoubleU15);
 
-                    dstSpan[0] = u15val;
-                    dstSpan = dstSpan[dstPitch..];
-                    srcSpan = srcSpan[srcPitch..];
-                }
-            }
-        }
-        private static void ConvertU15DoubleScaled(Babl _,
-                                                   double minVal,
-                                                   double maxVal,
-                                                   int min,
-                                                   int max,
-                                                   object src,
-                                                   object dst,
-                                                   int srcPitch,
-                                                   int dstPitch,
-                                                   long num)
-        {
-            if (src is ReadOnlyMemory<ushort> srcMem &&
-                dst is Memory<double> dstMem)
-            {
-                var srcSpan = srcMem.Span;
-                var dstSpan = dstMem.Span;
+        private static void ConvertU15Float(Babl _1, object src, object dst, int srcPitch, int dstPitch,
+                                            long num, object? _2) =>
+                Convert<ushort, float>(src, dst, srcPitch, dstPitch, num, ScaleU15Float);
 
-                while (num-- is >0)
-                {
-                    var u15val = (int)srcSpan[0];
-                    double dval;
+        private static void ConvertFloatU15(Babl _1, object src, object dst, int srcPitch, int dstPitch,
+                                            long num,object? _2) =>
+            Convert<float, ushort>(src, dst, srcPitch, dstPitch, num, ScaleFloatU15);
 
-                    if (u15val < min)
-                        dval = minVal;
-                    else if (u15val > max)
-                        dval = maxVal;
-                    else
-                        dval = (u15val - min) / (double)(max - min) * (maxVal - minVal) + minVal;
+        private static double ScaleU15Double(ushort value) =>
+            Scale(value, U15MinUshort, U15MaxUshort, U15MinDouble, U15MaxDouble, v => v / (double)U15MaxUshort);
+        private static ushort ScaleDoubleU15(double value) =>
+            Scale(value, U15MinDouble, U15MaxDouble, U15MinUshort, U15MaxUshort, v => (ushort)rint(v * U15MaxUshort));
 
-                    dstSpan[0] = dval;
-                    dstSpan = dstSpan[dstPitch..];
-                    srcSpan = srcSpan[srcPitch..];
-                }
-            }
-        }
-
-        private static void ConvertU15Double(Babl conversion,
-                                             object src,
-                                             object dst,
-                                             int srcPitch,
-                                             int dstPitch,
-                                             long num,
-                                                   object? _) =>
-            ConvertU15DoubleScaled(conversion, 0.0, 1.0, 0, (1 << 15), src, dst, srcPitch, dstPitch, num);
-
-        private static void ConvertDoubleU15(Babl conversion,
-                                             object src,
-                                             object dst,
-                                             int srcPitch,
-                                             int dstPitch,
-                                             long num,
-                                                  object? _) =>
-            ConvertDoubleU15Scaled(conversion, 0.0, 1.0, 0, (1 << 15), src, dst, srcPitch, dstPitch, num);
-
-        private static void ConvertFloatU15Scaled(Babl _,
-                                                  float minVal,
-                                                  float maxVal,
-                                                  int min,
-                                                  int max,
-                                                  object src,
-                                                  object dst,
-                                                  int srcPitch,
-                                                  int dstPitch,
-                                                  long num)
-        {
-            if (src is ReadOnlyMemory<float> srcMem &&
-                dst is Memory<ushort> dstMem)
-            {
-                var srcSpan = srcMem.Span;
-                var dstSpan = dstMem.Span;
-
-                while (num-- is > 0)
-                {
-                    var fval = srcSpan[0];
-                    ushort u15val;
-
-                    if (fval < minVal)
-                        u15val = (ushort)min;
-                    if (fval > maxVal)
-                        u15val = (ushort)max;
-                    else u15val = (ushort)rint((fval - minVal) / (maxVal - minVal) * (max - min) + min);
-
-                    dstSpan[0] = u15val;
-                    dstSpan = dstSpan[dstPitch..];
-                    srcSpan = srcSpan[srcPitch..];
-                }
-            }
-        }
-        private static void ConvertU15FloatScaled(Babl _,
-                                                  float minVal,
-                                                  float maxVal,
-                                                  int min,
-                                                  int max,
-                                                  object src,
-                                                  object dst,
-                                                  int srcPitch,
-                                                  int dstPitch,
-                                                  long num)
-        {
-            if (src is ReadOnlyMemory<ushort> srcMem &&
-                dst is Memory<float> dstMem)
-            {
-                var srcSpan = srcMem.Span;
-                var dstSpan = dstMem.Span;
-
-                while (num-- is > 0)
-                {
-                    var u15val = (int)srcSpan[0];
-                    float dval;
-
-                    if (u15val < min)
-                        dval = minVal;
-                    else if (u15val > max)
-                        dval = maxVal;
-                    else
-                        dval = (u15val - min) / (float)(max - min) * (maxVal - minVal) + minVal;
-
-                    dstSpan[0] = dval;
-                    dstSpan = dstSpan[dstPitch..];
-                    srcSpan = srcSpan[srcPitch..];
-                }
-            }
-        }
-
-        private static void ConvertU15Float(Babl conversion,
-                                             object src,
-                                             object dst,
-                                             int srcPitch,
-                                             int dstPitch,
-                                             long num,
-                                             object? _) =>
-            ConvertU15FloatScaled(conversion, 0.0f, 1.0f, 0, (1 << 15), src, dst, srcPitch, dstPitch, num);
-
-        private static void ConvertFloatU15(Babl conversion,
-                                             object src,
-                                             object dst,
-                                             int srcPitch,
-                                             int dstPitch,
-                                             long num,
-                                             object? _) =>
-            ConvertFloatU15Scaled(conversion, 0.0f, 1.0f, 0, (1 << 15), src, dst, srcPitch, dstPitch, num);
+        private static float ScaleU15Float(ushort value) =>
+            Scale(value, U15MinUshort, U15MaxUshort, U15MinFloat, U15MaxFloat, v => v / (float)U15MaxUshort);
+        private static ushort ScaleFloatU15(float value) =>
+            Scale(value, U15MinFloat, U15MaxFloat, U15MinUshort, U15MaxUshort, v => (ushort)rint(v * U15MaxUshort));
 
         private static void TypeU15Init()
         {
@@ -196,8 +67,8 @@ namespace babl.Init
 
             CreateConversion(Type("u15"), Type(Ids.Double), plane: ConvertU15Double);
             CreateConversion(Type(Ids.Double), Type("u15"), plane: ConvertDoubleU15);
-            CreateConversion(Type("u15"), Type(Ids.Float), plane: ConvertU15Float);
-            CreateConversion(Type(Ids.Float), Type("u15"), plane: ConvertFloatU15);
+            CreateConversion(Type("u15"), Type(Float), plane: ConvertU15Float);
+            CreateConversion(Type(Float), Type("u15"), plane: ConvertFloatU15);
 
             logOnNameLookups = true;
         }

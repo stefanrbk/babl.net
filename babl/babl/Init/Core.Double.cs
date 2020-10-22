@@ -11,22 +11,6 @@ namespace babl.Init
 {
     internal static partial class Core
     {
-        private static void ConvertDoubleDouble(Babl _1, object src, object dst, int srcPitch, int dstPitch, long num, object _2)
-        {
-            if (src is ReadOnlyMemory<double> srcMem &&
-                dst is Memory<double> dstMem)
-            {
-                var srcSpan = srcMem.Span;
-                var dstSpan = dstMem.Span;
-
-                while (num-- is > 0)
-                {
-                    dstSpan[0] = srcSpan[0];
-                    dstSpan = dstSpan[dstPitch..];
-                    srcSpan = srcSpan[srcPitch..];
-                }
-            }
-        }
         private static void TypeDoubleInit()
         {
             CreateType("double", id: Ids.Double, bits: 64, doc: "IEEE 754 double precision.");
@@ -37,7 +21,7 @@ namespace babl.Init
             CreateComponent("A", Ids.Alpha, hasAlpha: true);
             CreateComponent("PAD", Ids.Padding);
 
-            CreateConversion(Type(Ids.Double), Type(Ids.Double), plane: ConvertDoubleDouble);
+            CreateConversion(Type(Ids.Double), Type(Ids.Double), plane: Copy<double>);
         }
     }
 }

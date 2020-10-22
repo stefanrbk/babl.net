@@ -10,61 +10,20 @@ namespace babl.Init
 {
     internal static partial class Core
     {
-        private static void ConvertDoubleFloat(Babl _1, object src, object dst, int srcPitch, int dstPitch, long num, object _2)
-        {
-            if (src is ReadOnlyMemory<double> srcMem &&
-                dst is Memory<float> dstMem)
-            {
-                var srcSpan = srcMem.Span;
-                var dstSpan = dstMem.Span;
+        private static void ConvertFloatDouble(Babl _1, object src, object dst, int srcPitch, int dstPitch,
+                                               long num, object? _2) =>
+            Convert<float, double>(src, dst, srcPitch, dstPitch, num, v => v);
+        private static void ConvertDoubleFloat(Babl _1, object src, object dst, int srcPitch, int dstPitch,
+                                               long num, object? _2) =>
+            Convert<double, float>(src, dst, srcPitch, dstPitch, num, v => (float)v);
 
-                while (num-- is > 0)
-                {
-                    dstSpan[0] = (float)srcSpan[0];
-                    dstSpan = dstSpan[dstPitch..];
-                    srcSpan = srcSpan[srcPitch..];
-                }
-            }
-        }
-        private static void ConvertFloatDouble(Babl _1, object src, object dst, int srcPitch, int dstPitch, long num, object _2)
-        {
-            if (src is ReadOnlyMemory<float> srcMem &&
-                dst is Memory<double> dstMem)
-            {
-                var srcSpan = srcMem.Span;
-                var dstSpan = dstMem.Span;
-
-                while (num-- is > 0)
-                {
-                    dstSpan[0] = srcSpan[0];
-                    dstSpan = dstSpan[dstPitch..];
-                    srcSpan = srcSpan[srcPitch..];
-                }
-            }
-        }
-        private static void ConvertFloatFloat(Babl _1, object src, object dst, int srcPitch, int dstPitch, long num, object _2)
-        {
-            if (src is ReadOnlyMemory<float> srcMem &&
-                dst is Memory<float> dstMem)
-            {
-                var srcSpan = srcMem.Span;
-                var dstSpan = dstMem.Span;
-
-                while (num-- is > 0)
-                {
-                    dstSpan[0] = srcSpan[0];
-                    dstSpan = dstSpan[dstPitch..];
-                    srcSpan = srcSpan[srcPitch..];
-                }
-            }
-        }
         private static void TypeFloatInit()
         {
             CreateType("float", id: Float, bits: 32, doc: "IEEE 754 single precision");
 
             CreateConversion(Type(Float), Type(Ids.Double), plane: ConvertFloatDouble);
             CreateConversion(Type(Ids.Double), Type(Float), plane: ConvertDoubleFloat);
-            CreateConversion(Type(Float), Type(Float), plane: ConvertFloatFloat);
+            CreateConversion(Type(Float), Type(Float), plane: Copy<float>);
 
         }
     }
