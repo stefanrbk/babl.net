@@ -54,5 +54,18 @@ namespace babl.Init
         private static void Copy<T>(Babl _1, object src, object dst, int srcPitch, int dstPitch,
                                     long num, object? _2) =>
             Convert<T, T>(src, dst, srcPitch, dstPitch, num, v => v);
+
+        private static Tdst Scale<Tsrc, Tdst>(Tsrc value,
+                                              (Tsrc min, Tsrc max) src,
+                                              (Tdst min, Tdst max) dst,
+                                              Func<Tsrc, Tdst> conversion) where Tsrc : IComparable
+                                                                           where Tdst : IComparable
+        {
+            if (value.CompareTo(src.min) < 0)
+                return dst.min;
+            if (value.CompareTo(src.max) > 0)
+                return dst.max;
+            return conversion(value);
+        }
     }
 }

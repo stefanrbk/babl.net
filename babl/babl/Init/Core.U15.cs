@@ -10,26 +10,9 @@ namespace babl.Init
 {
     internal static partial class Core
     {
-        private const ushort U15MaxUshort = 32768;
-        private const ushort U15MinUshort = 0;
-        private const double U15MaxDouble = 1.0;
-        private const double U15MinDouble = 0.0;
-        private const float U15MaxFloat = 1.0f;
-        private const float U15MinFloat = 0.0f;
-        private static Tdst Scale<Tsrc, Tdst>(Tsrc value,
-                                              Tsrc minSrc,
-                                              Tsrc maxSrc,
-                                              Tdst minDst,
-                                              Tdst maxDst,
-                                              Func<Tsrc, Tdst> conversion) where Tsrc : IComparable
-                                                                           where Tdst : IComparable
-        {
-            if (value.CompareTo(minSrc) < 0)
-                return minDst;
-            if (value.CompareTo(maxSrc) > 0)
-                return maxDst;
-            return conversion(value);
-        }
+        private static (ushort min, ushort max) U15Ushort= (0, 32768);
+        private static (double min, double max) U15Double = (0.0, 1.0);
+        private static (float min, float max) U15Float = (0.0f, 1.0f);
         private static double rint(double value) =>
             Math.Floor(value + 0.5);
 
@@ -50,14 +33,14 @@ namespace babl.Init
             Convert<float, ushort>(src, dst, srcPitch, dstPitch, num, ScaleFloatU15);
 
         private static double ScaleU15Double(ushort value) =>
-            Scale(value, U15MinUshort, U15MaxUshort, U15MinDouble, U15MaxDouble, v => v / (double)U15MaxUshort);
+            Scale(value, U15Ushort, U15Double, v => v / (double)U15Ushort.max);
         private static ushort ScaleDoubleU15(double value) =>
-            Scale(value, U15MinDouble, U15MaxDouble, U15MinUshort, U15MaxUshort, v => (ushort)rint(v * U15MaxUshort));
+            Scale(value, U15Double, U15Ushort, v => (ushort)rint(v * U15Ushort.max));
 
         private static float ScaleU15Float(ushort value) =>
-            Scale(value, U15MinUshort, U15MaxUshort, U15MinFloat, U15MaxFloat, v => v / (float)U15MaxUshort);
+            Scale(value, U15Ushort, U15Float, v => v / (float)U15Ushort.max);
         private static ushort ScaleFloatU15(float value) =>
-            Scale(value, U15MinFloat, U15MaxFloat, U15MinUshort, U15MaxUshort, v => (ushort)rint(v * U15MaxUshort));
+            Scale(value, U15Float, U15Ushort, v => (ushort)rint(v * U15Ushort.max));
 
         private static void TypeU15Init()
         {
