@@ -45,7 +45,7 @@ namespace babl
                 null;
 
         public IEnumerator<Babl> GetEnumerator() =>
-            byId.Values.GetEnumerator();
+            babls.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() =>
             GetEnumerator();
