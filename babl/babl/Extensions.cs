@@ -65,6 +65,5 @@ namespace babl
 
             return basis;
         }
-
     }
 }

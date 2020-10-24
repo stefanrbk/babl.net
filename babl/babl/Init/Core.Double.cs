@@ -13,7 +13,7 @@ namespace babl.Init
     {
         private static void TypeDoubleInit()
         {
-            CreateType("double", id: Ids.Double, bits: 64, doc: "IEEE 754 double precision.");
+            var doubleType = CreateType("double", id: Ids.Double, bits: 64, doc: "IEEE 754 double precision.");
 
             CreateComponent("R", Ids.Red, hasLuma: true, hasChroma: true);
             CreateComponent("G", Ids.Green, hasLuma: true, hasChroma: true);
@@ -21,7 +21,7 @@ namespace babl.Init
             CreateComponent("A", Ids.Alpha, hasAlpha: true);
             CreateComponent("PAD", Ids.Padding);
 
-            CreateConversion(Type(Ids.Double), Type(Ids.Double), plane: Copy<double>);
+            CreateConversion(doubleType, doubleType, plane: Copy<double>);
         }
     }
 }

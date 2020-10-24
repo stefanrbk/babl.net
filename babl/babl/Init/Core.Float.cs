@@ -19,11 +19,12 @@ namespace babl.Init
 
         private static void TypeFloatInit()
         {
-            CreateType("float", id: Float, bits: 32, doc: "IEEE 754 single precision");
+            var floatType = CreateType("float", id: Float, bits: 32, doc: "IEEE 754 single precision");
+            var doubleType = Type(Ids.Double);
 
-            CreateConversion(Type(Float), Type(Ids.Double), plane: ConvertFloatDouble);
-            CreateConversion(Type(Ids.Double), Type(Float), plane: ConvertDoubleFloat);
-            CreateConversion(Type(Float), Type(Float), plane: Copy<float>);
+            CreateConversion(floatType, doubleType, plane: ConvertFloatDouble);
+            CreateConversion(doubleType, floatType, plane: ConvertDoubleFloat);
+            CreateConversion(floatType, floatType, plane: Copy<float>);
 
         }
     }

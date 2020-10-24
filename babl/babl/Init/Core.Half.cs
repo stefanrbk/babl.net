@@ -26,12 +26,14 @@ namespace babl.Init
 
         private static void TypeHalfInit()
         {
-            CreateType("half", id: Ids.Half, bits: 16, doc: "IEEE 754 half precision.");
+            var halfType = CreateType("half", id: Ids.Half, bits: 16, doc: "IEEE 754 half precision.");
+            var doubleType = Type(Ids.Double);
+            var floatType = Type(Float);
 
-            CreateConversion(Type(Ids.Half), Type(Ids.Double), plane: ConvertHalfDouble);
-            CreateConversion(Type(Ids.Double), Type(Ids.Half), plane: ConvertDoubleHalf);
-            CreateConversion(Type(Ids.Half), Type(Float), plane: ConvertHalfFloat);
-            CreateConversion(Type(Float), Type(Ids.Half), plane: ConvertFloatHalf);
+            CreateConversion(halfType, doubleType, plane: ConvertHalfDouble);
+            CreateConversion(doubleType, halfType, plane: ConvertDoubleHalf);
+            CreateConversion(halfType, floatType, plane: ConvertHalfFloat);
+            CreateConversion(floatType, halfType, plane: ConvertFloatHalf);
         }
     }
 }
