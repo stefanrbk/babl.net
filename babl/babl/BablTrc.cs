@@ -448,6 +448,12 @@ namespace babl
             Create("linear", BablTrcType.Linear, 1.0, 0, Array.Empty<float>());
         }
 
+        public static void Deinit()
+        {
+            for (var i = 0; trcDb[i] is not null; i++)
+                trcDb[i] = null;
+        }
+
         public static bool LutMatchGamma(float[] lut,
                                         int lutSize,
                                         float gamma)

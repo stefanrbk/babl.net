@@ -49,5 +49,15 @@ namespace babl
 
         IEnumerator IEnumerable.GetEnumerator() =>
             GetEnumerator();
+
+        internal void Clear()
+        {
+            lock(mutex)
+            {
+                byId.Clear();
+                byName.Clear();
+                babls.Clear();
+            }
+        }
     }
 }

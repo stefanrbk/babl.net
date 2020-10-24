@@ -98,6 +98,9 @@ namespace babl
             foreach (var entry in db)
                 action(entry);
         }
+
+        internal static void Deinit() =>
+            db.Clear();
     }
 
     internal class BablTypeInteger : BablType

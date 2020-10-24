@@ -37,6 +37,10 @@ namespace babl
                 if (--refCount == 0)
                 {
                     // Deinits go here
+                    BablConversion.Deinit();
+                    BablComponent.Deinit();
+                    BablTrc.Deinit();
+                    BablType.Deinit();
                 }
             }
         }
