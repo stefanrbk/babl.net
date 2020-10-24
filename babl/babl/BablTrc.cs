@@ -33,8 +33,8 @@ namespace babl
         public Polynomial GammaFromLinearPoly { get; set; } = null!;
         public float GammaFromLinearX0 { get; set; }
         public float GammaFromLinearX1 { get; set; }
-        public float[] Lut { get; set; } = null!;
-        public float[] InvLut { get; set; } = null!;
+        public float[] Lut { get; set; } = Array.Empty<float>();
+        public float[] InvLut { get; set; } = Array.Empty<float>();
 
         private BablTrc(BablTrcType type, double gamma)
         {

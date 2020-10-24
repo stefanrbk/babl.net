@@ -53,7 +53,7 @@ namespace babl
         {
             this.degree = 0;
             this.scale = 0;
-            Coeff = new double[degree];
+            Coeff = new double[MaxBigDegree+1];
 
             Degree = degree;
             Scale = scale;
@@ -79,26 +79,34 @@ namespace babl
                 _ => 0.0
             };
 
+        public double this[int i]
+        {
+            get =>
+                Coeff[degree - i];
+            set =>
+                Coeff[degree - i] = value;
+        }
+
         public Polynomial Shrink()
         {
             int i;
-            for (i = 0; i <= degree + 1; i++)
+            for (i = 0; i <= degree; i++)
             {
-                if (i == degree + 1)
-                    break; // short circuit before next if breaks the array
                 if (Math.Abs(Coeff[i]) > Epsilon)
                     break;
             }
 
             if (i == degree+1)
-                return this with { Degree = 0 };
+            {
+                var val = this with { Degree = 0 };
+                val[0] = 0.0;
+                return val;
+            }
             else if (i > 0)
             {
-                var nPoly = this with 
-                { 
-                    Degree = degree - i,
-                    Coeff = Coeff.Skip(i).ToArray()
-                };
+                var nPoly = this with { Degree = degree - i };
+                Coeff.Skip(i).ToArray().CopyTo(nPoly.Coeff, 0);
+
                 return nPoly;
             }
             return this;
@@ -107,96 +115,103 @@ namespace babl
         public Polynomial Add(Polynomial poly)
         {
             Babl.Assert(scale == poly.scale);
-                        
-            return this with 
-            { 
-                Degree = (degree >= poly.degree) ? degree : poly.degree,
-                Coeff = Coeff
-                            .Zip(poly.Coeff, (f, s) => f + s)
-                            .Concat((degree >= poly.degree ? this : poly).Coeff
-                                .Skip((degree >= poly.degree ? poly : this).degree))
-                            .ToArray()
-            };
+
+            int i;
+            var nPoly = this with { Degree = poly.degree };
+            if (degree >= poly.degree)
+                for (i = 0; i <= poly.degree; i++)
+                    nPoly[i] = this[i] + poly[i];
+            else
+            {
+                var origDegree = degree;
+
+                for (i = 0; i <= origDegree; i++)
+                    nPoly[i] = Coeff[origDegree - i] + poly[i];
+                for (; i <= poly.degree; i++)
+                    nPoly[i] = poly[i];
+            }
+            return nPoly;
         }
 
         public Polynomial Sub(Polynomial poly)
         {
             Babl.Assert(scale == poly.scale);
 
-            return this with
+            int i;
+            var nPoly = this with { Degree = poly.degree };
+            if (degree >= poly.degree)
+                for (i = 0; i <= poly.degree; i++)
+                    nPoly[i] = this[i] - poly[i];
+            else
             {
-                Degree = (degree >= poly.degree) ? degree : poly.degree,
-                Coeff = Coeff
-                            .Zip(poly.Coeff, (f, s) => f - s)
-                            .Concat((degree >= poly.degree ? this : poly).Coeff
-                                .Skip((degree >= poly.degree ? poly : this).degree))
-                            .ToArray()
-            };
+                var origDegree = degree;
+
+                for (i = 0; i <= origDegree; i++)
+                    nPoly[i] = Coeff[origDegree - i] - poly[i];
+                for (; i <= poly.degree; i++)
+                    nPoly[i] = poly[i];
+            }
+            return nPoly;
         }
 
-        public Polynomial Mul(double s) =>
-            this with
-            {
-                Coeff = Coeff.Select(a => a * s).ToArray()
-            };
-        public Polynomial Div(double s) =>
-            this with
-            {
-                Coeff = Coeff.Select(a => a / s).ToArray()
-            };
+        public Polynomial Mul(double s)
+        {
+            var nPoly = new Polynomial(degree, Scale);
+            for (var i = 0; i <= degree; i++)
+                nPoly.Coeff[i] = Coeff[i] * s;
+            return nPoly;
+        }
+        public Polynomial Div(double s)
+        {
+            var nPoly = new Polynomial(degree, Scale);
+            for (var i = 0; i <= degree; i++)
+                nPoly.Coeff[i] = Coeff[i] / s;
+            return nPoly;
+        }
 
         public Polynomial Mul(Polynomial poly)
         {
             Babl.Assert(scale == poly.scale);
 
-            var coeff = new double[degree + poly.degree];
+            var nPoly = new Polynomial(degree + poly.degree, scale);
 
             for (var i = 0; i <= degree; i++)
                 for (var j = 0; j <= poly.degree; j++)
-                    coeff[i + j] += Coeff[i] * poly.Coeff[j];
-            return new Polynomial(degree + poly.degree, scale) { Coeff = coeff };
+                    nPoly[i + j] += Coeff[i] * poly.Coeff[j];
+            return nPoly;
         }
 
         public Polynomial Integrate()
         {
-            var coeff = new double[degree + scale];
-            Coeff.CopyTo(coeff, 0);
+            var nPoly = new Polynomial(degree + scale, Scale);
+
             var i = 0;
             for (; i<= degree - scale; i++)
             {
-                coeff[i] *= scale;
-                coeff[i] /= degree - i;
+                nPoly.Coeff[i] = Coeff[i] * scale;
+                nPoly.Coeff[i] = Coeff[i] / degree - i;
             }
             for (; i <= degree; i++)
-                coeff[i] = 0.0;
+                nPoly.Coeff[i] = 0.0;
 
-            return this with
-            {
-                Degree = degree + scale,
-                Coeff = coeff,
-            };
+            return nPoly;
         }
 
         public Polynomial GammaIntegrate(double gamma)
         {
-            var coeff = new double[degree + scale];
-            Coeff.CopyTo(coeff, 0);
+            var nPoly = new Polynomial(degree + scale, Scale);
             gamma *= scale;
 
             var i = 0;
             for (; i<= degree - scale; i++)
             {
-                coeff[i] *= scale;
-                coeff[i] /= degree - i + gamma;
+                nPoly.Coeff[i] = Coeff[i] * scale;
+                nPoly.Coeff[i] = Coeff[i] / degree - i + gamma;
             }
             for (; i <= degree; i++)
-                coeff[i] = 0.0;
+                nPoly.Coeff[i] = 0.0;
 
-            return this with
-            {
-                Degree = degree + scale,
-                Coeff = coeff,
-            };
+            return nPoly;
         }
 
         public double InnerProduct(Polynomial poly, double x0, double x1)
@@ -227,7 +242,11 @@ namespace babl
             var basis = new Polynomial[n];
 
             for (var i = 0; i < n; i++)
+            {
                 basis[i] = new Polynomial(i, scale);
+
+                basis[i].Coeff[0] = 1.0;
+            }
 
             return basis;
         }

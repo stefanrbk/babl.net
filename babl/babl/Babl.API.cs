@@ -24,7 +24,7 @@ namespace babl
             {
                 if (refCount++ == 0)
                 {
-                    //BablTrc.Init();
+                    BablTrc.Init();
                     Core.Init();
                 }
             }

@@ -51,15 +51,14 @@ namespace babl
 
             return poly;
         }
+
         public static Polynomial[] GramSchmidt(this Polynomial[] basis, int n, double x0, double x1)
         {
             for (var i = 0; i < n; i++)
             {
                 if (i > 0)
-                {
-                    var temp = basis.ProjectCopy(basis[i], i, x0, x1);
-                    basis[i] = basis[i].Sub(temp);
-                }
+                    basis[i] = basis[i].Sub(basis.ProjectCopy(basis[i], i, x0, x1));
+
                 basis[i] = basis[i].Normalize(x0, x1);
             }
 
