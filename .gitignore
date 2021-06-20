@@ -1,5 +1,4 @@
 /.vs
 /babl/.vs
-/babl/babl/.vs
-/babl/babl/bin
-/babl/babl/obj
+/babl/bin
+/babl/obj
