@@ -6,7 +6,7 @@ namespace babl
     {
         static readonly BablDb db = new();
 
-        public BablComponent(string name, int id, bool luma, bool chroma, bool alpha) :
+        public BablComponent(string name, int id, bool luma = false, bool chroma = false, bool alpha = false) :
             base(ClassType.Component, name, id)
         {
             Luma = luma;
@@ -20,6 +20,15 @@ namespace babl
 
         public static Babl? FromId(int id) =>
             db.Find(id);
+
+        internal static void InitBase()
+        {
+            db.Insert(new BablComponent("R", (int)BablId.Red, luma: true, chroma: true));
+            db.Insert(new BablComponent("G", (int)BablId.Green, luma: true, chroma: true));
+            db.Insert(new BablComponent("B", (int)BablId.Blue, luma: true, chroma: true));
+            db.Insert(new BablComponent("A", (int)BablId.Alpha, alpha: true));
+            db.Insert(new BablComponent("PAD", (int)BablId.Padding));
+        }
 
         public static void ForEach(Action<Babl> action) =>
             db.ForEach(action);

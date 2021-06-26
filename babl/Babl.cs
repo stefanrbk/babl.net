@@ -19,5 +19,10 @@ namespace babl
             Name = name;
             Id = id;
         }
+
+        static Babl()
+        {
+            BablComponent.InitBase();
+        }
     }
 }
