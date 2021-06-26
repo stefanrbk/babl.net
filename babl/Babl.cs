@@ -9,7 +9,15 @@ namespace babl
     {
         internal const int Magic = 0xbab100;
 
-        internal ClassType Id;
+        internal ClassType ClassType;
+        internal int Id;
         internal string Name;
+
+        internal Babl(ClassType classType, string name, int id = 0)
+        {
+            ClassType = classType;
+            Name = name;
+            Id = id;
+        }
     }
 }
