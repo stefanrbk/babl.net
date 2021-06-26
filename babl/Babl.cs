@@ -12,12 +12,14 @@ namespace babl
         internal ClassType ClassType;
         internal int Id;
         internal string Name;
+        internal string Docs;
 
-        internal Babl(ClassType classType, string name, int id = 0)
+        internal Babl(ClassType classType, string name, int id, string docs)
         {
             ClassType = classType;
             Name = name;
             Id = id;
+            Docs = docs;
         }
 
         static Babl()

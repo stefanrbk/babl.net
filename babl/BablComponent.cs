@@ -6,8 +6,8 @@ namespace babl
     {
         static readonly BablDb db = new();
 
-        public BablComponent(string name, int id, bool luma = false, bool chroma = false, bool alpha = false) :
-            base(ClassType.Component, name, id)
+        public BablComponent(string name, int id, bool luma = false, bool chroma = false, bool alpha = false, string docs = "") :
+            base(ClassType.Component, name, id, docs)
         {
             Luma = luma;
             Chroma = chroma;
