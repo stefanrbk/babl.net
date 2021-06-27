@@ -27,6 +27,9 @@ namespace babl
             db.Insert(new BablType("double", BablId.Double, bits: 64, docs: "IEEE 754 double precision."));
         }
 
+        public static void ForEach(BablEachFunc action) =>
+            db.ForEach(action);
+
         public override int GetHashCode() =>
             HashCode.Combine(Bits);
 
