@@ -36,7 +36,7 @@ namespace babl
             db.Insert(new BablComponent("PAD", (int)BablId.Padding));
         }
 
-        public static void ForEach(Action<Babl> action) =>
+        public static void ForEach(BablEachFunc action) =>
             db.ForEach(action);
 
         public bool Equals(BablComponent other) =>

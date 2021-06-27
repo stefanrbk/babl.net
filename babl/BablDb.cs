@@ -30,7 +30,7 @@ namespace babl
             return babl;
         }
 
-        public void ForEach(Action<Babl> action)
+        public void ForEach(BablEachFunc action)
         {
             List<Babl> babls;
             lock(mutex)
