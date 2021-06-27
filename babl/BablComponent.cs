@@ -7,7 +7,7 @@ namespace babl
         static readonly BablDb db = new();
 
         public BablComponent(string name, int id, bool luma = false, bool chroma = false, bool alpha = false, string docs = "") :
-            base(ClassType.Component, name, id, docs)
+            base(name, id, docs)
         {
             Luma = luma;
             Chroma = chroma;
@@ -15,7 +15,8 @@ namespace babl
         }
 
         public BablComponent(string name, BablId id, bool luma = false, bool chroma = false, bool alpha = false, string docs = "") :
-            this(name, (int)id, luma, chroma, alpha, docs) { }
+            this(name, (int)id, luma, chroma, alpha, docs)
+        { }
 
         public bool Luma { get; }
         public bool Chroma { get; }
