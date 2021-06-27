@@ -14,18 +14,12 @@ namespace babl
             Alpha = alpha;
         }
 
-        public BablComponent(string name, BablId id, bool luma = false, bool chroma = false, bool alpha = false, string docs = "") :
-            this(name, (int)id, luma, chroma, alpha, docs) { }
-
         public bool Luma { get; }
         public bool Chroma { get; }
         public bool Alpha { get; }
 
-        public static Babl? Find(int id) =>
+        public static Babl? FromId(int id) =>
             db.Find(id);
-
-        public static Babl? Find(string name) =>
-            db.Find(name);
 
         internal static void InitBase()
         {
@@ -43,7 +37,7 @@ namespace babl
             Luma == other.Luma && Chroma == other.Chroma && Alpha == other.Alpha;
 
         public override bool Equals(object? obj) =>
-            obj is BablComponent babl && Equals(babl);
+            obj is BablComponent babl && this.Equals(babl);
 
         public override int GetHashCode() =>
             HashCode.Combine(Luma, Chroma, Alpha);

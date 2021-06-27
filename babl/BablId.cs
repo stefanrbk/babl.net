@@ -1,6 +1,6 @@
 ﻿namespace babl
 {
-    public enum BablId
+    internal enum BablId
     {
         Undefined = 0,
         TypeBase = 100,

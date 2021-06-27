@@ -25,9 +25,6 @@ namespace babl
         static Babl()
         {
             BablComponent.InitBase();
-            BablType.InitBase();
         }
     }
-
-    public delegate void BablEachFunc(Babl babl);
 }

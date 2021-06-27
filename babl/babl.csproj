@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>preview</LangVersion>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <AssemblyVersion>0.0.0.1</AssemblyVersion>
     <FileVersion>0.0.0.1</FileVersion>
