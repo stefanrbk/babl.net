@@ -1,4 +1,9 @@
-﻿using System;
+﻿
+using NLog;
+using NLog.Config;
+using NLog.Targets;
+
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -24,6 +29,11 @@ namespace babl
 
         static Babl()
         {
+            var config = new LoggingConfiguration();
+            var logconsole = new ColoredConsoleTarget();
+            config.AddRuleForAllLevels(logconsole);
+            LogManager.Configuration = config;
+
             BablComponent.InitBase();
             BablType.InitBase();
         }
@@ -41,6 +51,13 @@ namespace babl
                     throw new Exception($"Eeeeek! Assertion failed: {message} at line {line} in {method} within {path}.");
 
         }
+
+        internal static void Log(string message) =>
+            LogManager.GetCurrentClassLogger().Warn(message);
+
+        internal static void Fatal(string message) =>
+            LogManager.GetCurrentClassLogger().Fatal(message);
+
     }
 
     public delegate void BablEachFunc(Babl babl);
