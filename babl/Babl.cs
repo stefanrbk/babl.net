@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,6 +28,20 @@ namespace babl
         {
             BablComponent.InitBase();
             BablType.InitBase();
+        }
+
+        internal static void Assert(bool value, 
+                                    string message = "", 
+                   [CallerFilePath] string path = "", 
+                 [CallerLineNumber] int line = 0, 
+                 [CallerMemberName] string method = "")
+        {
+            if (!value)
+                if (message == "")
+                    throw new Exception($"Eeeeek! Assertion failed at line: {line} in {method} within {path}.");
+                else
+                    throw new Exception($"Eeeeek! Assertion failed: {message} at line {line} in {method} within {path}.");
+
         }
     }
 
