@@ -1,0 +1,19 @@
+{
+  "help": "https://go.microsoft.com/fwlink/?linkid=866610",
+
+  "dependentFileProviders": {
+    "add": {
+      "fileToFile": {
+        "add": {
+          "BablLinearTrc.cs": [ "BablTrc.cs" ],
+          "BablLutTrc.cs": [ "BablTrc.cs" ],
+          "BablFormulaTrc.cs": [ "BablTrc.cs" ],
+          "BablFormulaSrgbTrc.cs": [ "BablFormulaTrc.cs" ],
+          "BablFormulaCieTrc.cs": [ "BablFormulaTrc.cs" ],
+          "BablFormulaGammaTrc.cs": [ "BablFormulaTrc.cs" ],
+          "BablSrgbTrc.cs": [ "BablTrc.cs" ]
+        }
+      }
+    }
+  }
+}

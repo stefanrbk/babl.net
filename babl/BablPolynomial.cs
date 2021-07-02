@@ -10,8 +10,6 @@ using static babl.Babl;
 
 namespace babl
 {
-    delegate double EvalFunc(in BablPolynomial poly, double x);
-
     [SkipLocalsInit]
     unsafe struct BablPolynomial
     {
