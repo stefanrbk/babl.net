@@ -11,7 +11,7 @@ using static babl.Babl;
 namespace babl
 {
     [SkipLocalsInit]
-    unsafe struct BablPolynomial
+    public unsafe struct BablPolynomial
     {
         internal const int MinDegree = 0;
         internal const int MaxDegree = 10;
@@ -19,11 +19,23 @@ namespace babl
         internal const int MaxScale = 2;
         internal const double Epsilon = 1e-10;
 
+#if DEBUG
+        public
+#endif
         int degree;
+#if DEBUG
+        public
+#endif
         int scale;
+#if DEBUG
+        public
+#endif
         fixed double coeff[MaxDegree + 1];
 
-        public static double Eval(BablPolynomial* poly, double x)
+#if DEBUG
+        public
+#endif
+        static double Eval(BablPolynomial* poly, double x)
         {
             Assert(poly->scale is >= MinScale and <= MaxScale);
 
@@ -51,7 +63,10 @@ namespace babl
                 _ => 0
             };
 
-        public static void SetDegree(BablPolynomial* poly, int degree, int scale)
+#if DEBUG
+        public
+#endif
+        static void SetDegree(BablPolynomial* poly, int degree, int scale)
         {
             Assert(degree >= MinDegree);
             Assert(degree <= BablBigPolynomial.MaxDegree);
@@ -62,13 +77,19 @@ namespace babl
             poly->scale = scale;
         }
 
-        public double this[int i]
+#if DEBUG
+        public
+#endif
+        double this[int i]
         {
             get => coeff[degree - i];
             set => coeff[degree - i] = value; 
         }
 
-        public static void Copy(BablPolynomial* poly, in BablPolynomial* rpoly)
+#if DEBUG
+        public
+#endif
+        static void Copy(BablPolynomial* poly, in BablPolynomial* rpoly)
         {
             poly->degree = rpoly->degree;
             poly->scale = rpoly->scale;
@@ -76,13 +97,19 @@ namespace babl
             Unsafe.CopyBlock(poly->coeff, rpoly->coeff, (MaxDegree + 1) * sizeof(double));
         }
 
-        public static void Reset(BablPolynomial* poly, int scale)
+#if DEBUG
+        public
+#endif
+        static void Reset(BablPolynomial* poly, int scale)
         {
             SetDegree(poly, 0, scale);
             (*poly)[0] = 0.0;
         }
 
-        public static void Shrink(BablPolynomial* poly)
+#if DEBUG
+        public
+#endif
+        static void Shrink(BablPolynomial* poly)
         {
             int i;
 
@@ -100,7 +127,10 @@ namespace babl
             }
         }
 
-        public static void Add(BablPolynomial* poly, in BablPolynomial* rpoly)
+#if DEBUG
+        public
+#endif
+        static void Add(BablPolynomial* poly, in BablPolynomial* rpoly)
         {
             int i;
 
@@ -123,7 +153,10 @@ namespace babl
             }
         }
 
-        public static void Subtract(BablPolynomial* poly, in BablPolynomial* rpoly)
+#if DEBUG
+        public
+#endif
+        static void Subtract(BablPolynomial* poly, in BablPolynomial* rpoly)
         {
             int i;
 
@@ -146,19 +179,28 @@ namespace babl
             }
         }
 
-        public static void ScalarMultiply(BablPolynomial* poly, double a)
+#if DEBUG
+        public
+#endif
+        static void ScalarMultiply(BablPolynomial* poly, double a)
         {
             for (var i = 0; i <= poly->degree; i++)
                 (*poly)[i] *= a;
         }
 
-        public static void ScalarDivide(BablPolynomial* poly, double a)
+#if DEBUG
+        public
+#endif
+        static void ScalarDivide(BablPolynomial* poly, double a)
         {
             for (var i = 0; i <= poly->degree; i++)
                 (*poly)[i] /= a;
         }
 
-        public static void MultiplyCopy(BablPolynomial* poly, in BablPolynomial* poly1, in BablPolynomial* poly2)
+#if DEBUG
+        public
+#endif
+        static void MultiplyCopy(BablPolynomial* poly, in BablPolynomial* poly1, in BablPolynomial* poly2)
         {
             int i, j;
 
@@ -173,7 +215,10 @@ namespace babl
                     (*poly)[i + j] += (*poly1)[i] * (*poly2)[j];
         }
 
-        public static void Integrate(BablPolynomial* poly)
+#if DEBUG
+        public
+#endif
+        static void Integrate(BablPolynomial* poly)
         {
             int i;
 
@@ -189,7 +234,10 @@ namespace babl
                 poly->coeff[i] = 0;
         }
 
-        public static void GammaIntegrate(BablPolynomial* poly, double gamma)
+#if DEBUG
+        public
+#endif
+        static void GammaIntegrate(BablPolynomial* poly, double gamma)
         {
             int i;
 
@@ -206,11 +254,11 @@ namespace babl
             for (; i <= poly->degree; i++)
                 poly->coeff[i] = 0;
         }
-                
-        public static double InnerProduct(in BablPolynomial* poly1,
-                                          in BablPolynomial* poly2,
-                                          double x0,
-                                          double x1)
+
+#if DEBUG
+        public
+#endif
+        static double InnerProduct(in BablPolynomial* poly1, in BablPolynomial* poly2, double x0, double x1)
         {
             Unsafe.SkipInit<BablBigPolynomial>(out var temp);
 
@@ -221,10 +269,10 @@ namespace babl
                    Eval((BablPolynomial*)&temp, x0);
         }
 
-        public static double GammaInnerProduct(in BablPolynomial* poly,
-                                               double gamma,
-                                               double x0,
-                                               double x1)
+#if DEBUG
+        public
+#endif
+        static double GammaInnerProduct(in BablPolynomial* poly, double gamma, double x0, double x1)
         {
             Unsafe.SkipInit<BablBigPolynomial>(out var temp);
 
@@ -235,10 +283,16 @@ namespace babl
                    (Eval((BablPolynomial*)&temp, x0) * Math.Pow(x0, gamma));
         }
 
-        public static double Normal(in BablPolynomial* poly, double x0, double x1) =>
+#if DEBUG
+        public
+#endif
+        static double Normal(in BablPolynomial* poly, double x0, double x1) =>
             Math.Sqrt(InnerProduct(poly, poly, x0, x1));
 
-        public static void Normalize(in BablPolynomial* poly, double x0, double x1)
+#if DEBUG
+        public
+#endif
+        static void Normalize(in BablPolynomial* poly, double x0, double x1)
         {
             var norm = Normal(poly, x0, x1);
 
@@ -246,11 +300,10 @@ namespace babl
                 ScalarDivide(poly, norm);
         }
 
-        public static void ProjectCopy(BablPolynomial* poly,
-                                       in BablPolynomial* rpoly,
-                                       in BablPolynomial[] basis,
-                                       double x0,
-                                       double x1)
+#if DEBUG
+        public
+#endif
+        static void ProjectCopy(BablPolynomial* poly, in BablPolynomial* rpoly, in BablPolynomial[] basis, double x0, double x1)
         {
             Assert(basis.Length > 0);
 
@@ -269,11 +322,10 @@ namespace babl
             }
         }
 
-        public static void GammaProjectCopy(BablPolynomial* poly,
-                                            double gamma,
-                                            in BablPolynomial[] basis,
-                                            double x0,
-                                            double x1)
+#if DEBUG
+        public
+#endif
+        static void GammaProjectCopy(BablPolynomial* poly, double gamma, in BablPolynomial[] basis, double x0, double x1)
         {
             Assert(basis.Length > 0);
 
@@ -292,9 +344,10 @@ namespace babl
             }
         }
 
-        public static void GramSchmidt(BablPolynomial[] basis,
-                                       double x0,
-                                       double x1)
+#if DEBUG
+        public
+#endif
+        static void GramSchmidt(BablPolynomial[] basis, double x0, double x1)
         {
             fixed (BablPolynomial* b = basis)
                 for (var i = 0; i < basis.Length; i++)
@@ -303,14 +356,17 @@ namespace babl
                     {
                         Unsafe.SkipInit<BablPolynomial>(out var temp);
 
-                        ProjectCopy(&temp, &b[i], basis, x0, x1);
+                        ProjectCopy(&temp, &b[i], basis.Take(i).ToArray(), x0, x1);
                         Subtract(&b[i], &temp);
                     }
                     Normalize(&b[i], x0, x1);
                 }
         }
 
-        public static void Basis(BablPolynomial[] basis, int scale)
+#if DEBUG
+        public
+#endif
+        static void Basis(BablPolynomial[] basis, int scale)
         {
             fixed(BablPolynomial* b = basis)
                 for(var i = 0; i < basis.Length; i++)
@@ -322,21 +378,16 @@ namespace babl
                 }
         }
 
-        public static void OrthonormalBasis(BablPolynomial[] basis,
-                                            double x0,
-                                            double x1,
-                                            int scale)
+#if DEBUG
+        public
+#endif
+        static void OrthonormalBasis(BablPolynomial[] basis, double x0, double x1, int scale)
         {
             Basis(basis, scale);
             GramSchmidt(basis, x0, x1);
         }
 
-        public static void ApproximateGamma(BablPolynomial* poly,
-                                            double gamma,
-                                            double x0,
-                                            double x1,
-                                            int degree,
-                                            int scale)
+        public static void ApproximateGamma(BablPolynomial* poly, double gamma, double x0, double x1, int degree, int scale)
         {
             Assert(poly is not null);
             Assert(gamma >= 0.0);
@@ -345,7 +396,7 @@ namespace babl
             Assert(degree is >= MinDegree and <= MaxDegree);
             Assert(scale is >= MinScale and <= MaxScale);
 
-            var basis = new BablPolynomial[degree];
+            var basis = new BablPolynomial[degree + 1];
 
             OrthonormalBasis(basis, x0, x1, scale);
 
