@@ -15,10 +15,24 @@ namespace babl
     public abstract class Babl
     {
         internal const int Magic = 0xbab100;
-
-        internal int Id;
-        internal string Name;
-        internal string Docs;
+#if DEBUG
+        public
+#else
+        internal
+#endif
+        int Id;
+#if DEBUG
+        public
+#else
+        internal
+# endif
+        string Name;
+#if DEBUG
+        public
+#else
+        internal
+#endif
+        string Docs;
 
         internal Babl(string name, int id, string docs)
         {
@@ -38,6 +52,13 @@ namespace babl
             BablComponent.InitBase();
             BablType.InitBase();
         }
+
+        public static Babl Component(string name) =>
+            BablComponent.Find(name) ?? throw new ArgumentException("BablComponent does not exist", nameof(name));
+        public static Babl ComponentNew(string name = "", int id = 0, bool luma = false, bool chroma = false, bool alpha = false, string docs = "") =>
+            BablComponent.New(name, id, luma, chroma, alpha, docs);
+        public static Babl ComponentNew(BablId id, string name = "", bool luma = false, bool chroma = false, bool alpha = false, string docs = "") =>
+            BablComponent.New(id, name, luma, chroma, alpha, docs);
 
         internal static void Assert(bool value, 
                                     string message = "", 

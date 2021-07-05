@@ -2,11 +2,17 @@
 
 namespace babl
 {
-    class BablComponent : Babl
+#if DEBUG
+    public
+#endif
+        class BablComponent : Babl
     {
+#if DEBUG
+        internal
+#endif
         static readonly BablDb db = new();
 
-        public BablComponent(string name, int id, bool luma = false, bool chroma = false, bool alpha = false, string docs = "") :
+        internal BablComponent(string name, int id, bool luma = false, bool chroma = false, bool alpha = false, string docs = "") :
             base(name, id, docs)
         {
             Luma = luma;
@@ -14,18 +20,42 @@ namespace babl
             Alpha = alpha;
         }
 
-        public BablComponent(string name, BablId id, bool luma = false, bool chroma = false, bool alpha = false, string docs = "") :
-            this(name, (int)id, luma, chroma, alpha, docs)
-        { }
+        internal static Babl New(BablId id, string name = "", bool luma = false, bool chroma = false, bool alpha = false, string docs = "") =>
+            New(name, (int)id, luma, chroma, alpha, docs);
 
-        public bool Luma { get; }
-        public bool Chroma { get; }
-        public bool Alpha { get; }
+        internal static Babl New(string name = "", int id = 0, bool luma = false, bool chroma = false, bool alpha = false, string docs = "")
+        {
+            return (id != 0
+                ? Find(id)
+                : Find(name))
+                ?? db.Insert(new BablComponent(name, id, luma, chroma, alpha, docs));
+        }
 
-        public static Babl? Find(int id) =>
+#if DEBUG
+        public
+#else
+        internal
+#endif
+        bool Luma { get; }
+
+#if DEBUG
+        public
+#else
+        internal
+#endif
+        bool Chroma { get; }
+
+#if DEBUG
+        public
+#else
+        internal
+#endif
+        bool Alpha { get; }
+
+        internal static Babl? Find(int id) =>
             db.Find(id);
 
-        public static Babl? Find(string name) =>
+        internal static Babl? Find(string name) =>
             db.Find(name);
 
         internal static void InitBase()
@@ -37,10 +67,16 @@ namespace babl
             db.Insert(new BablComponent("PAD", (int)BablId.Padding));
         }
 
-        public static void ForEach(BablEachFunc action) =>
+
+#if DEBUG
+        public
+#else
+        internal
+#endif
+        static void ForEach(BablEachFunc action) =>
             db.ForEach(action);
 
-        public bool Equals(BablComponent other) =>
+        internal bool Equals(BablComponent other) =>
             Luma == other.Luma && Chroma == other.Chroma && Alpha == other.Alpha;
 
         public override bool Equals(object? obj) =>
