@@ -27,7 +27,8 @@ namespace babl
             Docs = docs;
         }
 
-        static Babl()
+        [ModuleInitializer]
+        public static void BablInit()
         {
             var config = new LoggingConfiguration();
             var logconsole = new ColoredConsoleTarget();
