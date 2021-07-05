@@ -16,9 +16,12 @@ namespace BablTest
 {
     public unsafe class BablComponentTests
     {
-        [Test, Category(Info)]
-        public void RegisteredComponents() =>
+        [Test, Category(Info), Order(1)]
+        public void RegisteredComponents()
+        {
+            TestContext.WriteLine("Initially registered BablComponents:");
             babl.BablComponent.ForEach(b => TestContext.WriteLine(b.Name));
+        }
 
         [Test, Category(Parity)]
         public void NewCbTest()
