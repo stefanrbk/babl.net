@@ -10,6 +10,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
+using static BablTest.BablHandler;
+
 namespace BablTest
 {
     public unsafe class BablPolynomialTests
@@ -19,18 +21,18 @@ namespace BablTest
         [SetUp]
         public void Init()
         {
-            poly = BablHandler.BablAllocate(sizeof(BablPolynomialRaw.Big));
+            poly = BablAllocate(sizeof(BablPolynomialRaw.Big));
             Unsafe.InitBlock(poly.ToPointer(), 0, (uint)sizeof(BablPolynomialRaw.Big));
         }
 
         [TearDown]
         public void Exit() =>
-            BablHandler.BablFree(poly);
+            BablFree(poly);
 
         [TestCase(2.2)]
         [TestCase(1.0)]
         [TestCase(1.8)]
-        [Category("Parity")]
+        [Category(Parity)]
         public void ApproximateGammaTest(double gamma)
         {
             var x0 = 0.5 / 255.0;
@@ -38,7 +40,7 @@ namespace BablTest
             var degree = 6;
             var scale = 2;
 
-            BablHandler.BablPolynomialApproximateGamma(poly, gamma, x0, x1, degree, scale);
+            BablPolynomialApproximateGamma(poly, gamma, x0, x1, degree, scale);
 
             var actual = new BablPolynomial();
 
@@ -52,9 +54,9 @@ namespace BablTest
                 Assert.AreEqual(expected.coeff[i], actual.coeff[i]);
 
             TestContext.WriteLine("Expected: (ignore first 8 bytes)");
-            TestContext.WriteLine(BablHandler.HexPrint(poly, sizeof(BablPolynomialRaw), 40));
+            TestContext.WriteLine(HexPrint(poly, sizeof(BablPolynomialRaw), 40));
             TestContext.WriteLine("Actual:");
-            TestContext.WriteLine(BablHandler.HexPrint((IntPtr)Unsafe.AsPointer(ref actual), sizeof(BablPolynomial), 40));
+            TestContext.WriteLine(HexPrint((IntPtr)Unsafe.AsPointer(ref actual), sizeof(BablPolynomial), 40));
         }
     }
     public unsafe struct BablPolynomialRaw

@@ -12,6 +12,10 @@ namespace BablTest
     [SetUpFixture]
     public class BablHandler
     {
+        const string DllPath = "libbabl-0.1-0.dll";
+        public const string Info = "Info";
+        public const string Parity = "Parity";
+
         [OneTimeSetUp]
         public void Init() => 
             BablInit();
@@ -59,19 +63,34 @@ namespace BablTest
             return sb.ToString();
         }
 
-        [DllImport("libbabl-0.1-0.dll", EntryPoint = "babl_init")]
+        [DllImport(DllPath, EntryPoint = "babl_init")]
         internal extern static void BablInit();
 
-        [DllImport("libbabl-0.1-0.dll", EntryPoint = "babl_exit")]
+        [DllImport(DllPath, EntryPoint = "babl_exit")]
         internal extern static void BablExit();
 
-        [DllImport("libbabl-0.1-0.dll", EntryPoint = "babl_malloc")]
+        [DllImport(DllPath, EntryPoint = "babl_malloc")]
         internal extern static IntPtr BablAllocate(nint size);
 
-        [DllImport("libbabl-0.1-0.dll", EntryPoint = "babl_free")]
+        [DllImport(DllPath, EntryPoint = "babl_free")]
         internal extern static void BablFree(IntPtr ptr);
 
-        [DllImport("libbabl-0.1-0.dll", EntryPoint = "babl_polynomial_approximate_gamma")]
+        [DllImport(DllPath, EntryPoint = "babl_polynomial_approximate_gamma")]
         internal extern static void BablPolynomialApproximateGamma(IntPtr poly, double gamma, double x0, double x1, int degree, int scale);
+
+        [DllImport(DllPath, EntryPoint = "babl_component", CharSet = CharSet.Ansi)]
+        internal extern static IntPtr BablComponent(string name);
+
+        [DllImport(DllPath, EntryPoint = "babl_component_new", CharSet = CharSet.Ansi)]
+        internal extern static IntPtr BablComponentNew(__arglist);
+
+        public unsafe struct Instance
+        {
+            public int ClassType;
+            public int Id;
+            public IntPtr Creator;
+            public IntPtr Name;
+            public IntPtr Doc;
+        }
     }
 }

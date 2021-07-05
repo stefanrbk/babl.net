@@ -3,7 +3,10 @@ using System.Collections.Generic;
 
 namespace babl
 {
-    class BablDb
+#if DEBUG
+    public
+#endif
+        class BablDb
     {
         readonly Dictionary<string, Babl> names = new();
         readonly Dictionary<int, Babl> ids = new();
