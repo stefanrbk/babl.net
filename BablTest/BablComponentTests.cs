@@ -23,7 +23,7 @@ namespace BablTest
             babl.BablComponent.ForEach(b => TestContext.WriteLine(b.Name));
         }
 
-        [Test, Category(Parity)]
+        [Test, Category(Parity), Order(2)]
         public void NewCbTest()
         {
             var expected = Marshal.PtrToStructure<BablComponentRaw>(BablComponentNew(__arglist("Cb", "id", 10032, "chroma", IntPtr.Zero)));
@@ -33,7 +33,7 @@ namespace BablTest
             CheckSame(expected, actual);
         }
 
-        [Test, Category(Parity)]
+        [Test, Category(Parity), Order(2)]
         public void NewYTest()
         {
             var expected = Marshal.PtrToStructure<BablComponentRaw>(BablComponentNew(__arglist("Y", "id", 10001, "luma", IntPtr.Zero)));
@@ -42,7 +42,7 @@ namespace BablTest
             CheckSame(expected, actual);
         }
 
-        [Test]
+        [Test, Category(Identity), Order(3)]
         public void NewReturnsExistingComponent()
         {
             var expected = Babl.ComponentNew(name: "B'", id: BablId.BlueNonlinear, luma: true, chroma: true);
@@ -51,7 +51,7 @@ namespace BablTest
             CheckSame(expected as BablComponent, actual as BablComponent);
         }
 
-        [Test]
+        [Test, Category(Identity), Order(3)]
         public void RetrieveAlphaTest()
         {
             var expected = Babl.ComponentNew(name: "A") as BablComponent;
@@ -81,7 +81,7 @@ namespace BablTest
 
         public unsafe struct BablComponentRaw
         {
-            public BablHandler.Instance Instance;
+            public Instance Instance;
             public bool Luma;
             public bool Chroma;
             public bool Alpha;

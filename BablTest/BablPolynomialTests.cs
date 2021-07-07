@@ -32,7 +32,7 @@ namespace BablTest
         [TestCase(2.2)]
         [TestCase(1.0)]
         [TestCase(1.8)]
-        [Category(Parity)]
+        [Category(Parity), Order(2)]
         public void ApproximateGammaTest(double gamma)
         {
             var x0 = 0.5 / 255.0;
@@ -54,9 +54,9 @@ namespace BablTest
                 Assert.AreEqual(expected.coeff[i], actual.coeff[i]);
 
             TestContext.WriteLine("Expected: (ignore first 8 bytes)");
-            TestContext.WriteLine(HexPrint(poly, sizeof(BablPolynomialRaw), 40));
+            TestContext.WriteLine(HexPrint(ref BablPolynomialRaw.AsRef(poly), 40));
             TestContext.WriteLine("Actual:");
-            TestContext.WriteLine(HexPrint((IntPtr)Unsafe.AsPointer(ref actual), sizeof(BablPolynomial), 40));
+            TestContext.WriteLine(HexPrint(ref actual, 40));
         }
     }
     public unsafe struct BablPolynomialRaw
@@ -65,6 +65,9 @@ namespace BablTest
         public int degree;
         public int scale;
         public fixed double coeff[11];
+
+        public static ref BablPolynomialRaw AsRef(IntPtr ptr) =>
+            ref Unsafe.AsRef<BablPolynomialRaw>((void*)ptr);
 
         public struct Big
         {

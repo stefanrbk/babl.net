@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +17,7 @@ namespace BablTest
         const string DllPath = "libbabl-0.1-0.dll";
         public const string Info = "Info";
         public const string Parity = "Parity";
+        public const string Identity = "Identity";
 
         [OneTimeSetUp]
         public void Init() => 
@@ -24,9 +27,11 @@ namespace BablTest
         public void Exit() =>
             BablExit();
 
-        public unsafe static string HexPrint(IntPtr ptr, int size, int lineWidth)
+        public unsafe static string HexPrint<T>(ref T ptr, int lineWidth) where T: unmanaged
         {
-            var bytes = new ReadOnlySpan<byte>(ptr.ToPointer(), size);
+            var size = sizeof(T);
+
+            var bytes = new ReadOnlySpan<byte>(Unsafe.AsPointer(ref ptr), size);
             var sb = new StringBuilder();
 
             var sizeChars = size.ToString("X").Length;
@@ -34,18 +39,18 @@ namespace BablTest
             if (bytesPerLine < 1)
                 throw new ArgumentException("Width is too small", nameof(lineWidth));
 
-            for (var i = 0; i < size; i+= bytesPerLine)
+            for (var i = 0; i < size; i += bytesPerLine)
             {
-                var strBytes = new StringBuilder(lineWidth+1)
+                var strBytes = new StringBuilder(lineWidth + 1)
                     .Append(i.ToString("X")
                              .PadLeft(sizeChars, '0'))
                     .Append("   ");
 
                 var strChars = new StringBuilder(bytesPerLine);
-                                
-                for(var j = 0; j < bytesPerLine && j + i < size; j++)
+
+                for (var j = 0; j < bytesPerLine && j + i < size; j++)
                 {
-                    strBytes.Append(bytes[i+j].ToString("X")
+                    strBytes.Append(bytes[i + j].ToString("X")
                                         .PadLeft(2, '0'))
                         .Append(' ');
 
