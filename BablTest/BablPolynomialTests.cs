@@ -14,6 +14,7 @@ using static BablTest.BablHandler;
 
 namespace BablTest
 {
+    [TestFixture(TestOf = typeof(BablPolynomial))]
     public unsafe class BablPolynomialTests
     {
         IntPtr poly;
@@ -21,8 +22,8 @@ namespace BablTest
         [SetUp]
         public void Init()
         {
-            poly = BablAllocate(sizeof(BablPolynomialRaw.Big));
-            Unsafe.InitBlock(poly.ToPointer(), 0, (uint)sizeof(BablPolynomialRaw.Big));
+            poly = BablAllocate(sizeof(Raw.Big));
+            Unsafe.InitBlock(poly.ToPointer(), 0, (uint)sizeof(Raw.Big));
         }
 
         [TearDown]
@@ -46,7 +47,7 @@ namespace BablTest
 
             BablPolynomial.ApproximateGamma(&actual, gamma, x0, x1, degree, scale);
 
-            var expected = Marshal.PtrToStructure<BablPolynomialRaw>(poly);
+            var expected = Marshal.PtrToStructure<Raw>(poly);
 
             Assert.AreEqual(expected.degree, actual.degree);
             Assert.AreEqual(expected.scale, actual.scale);
@@ -54,27 +55,27 @@ namespace BablTest
                 Assert.AreEqual(expected.coeff[i], actual.coeff[i]);
 
             TestContext.WriteLine("Expected: (ignore first 8 bytes)");
-            TestContext.WriteLine(HexPrint(ref BablPolynomialRaw.AsRef(poly), 40));
+            TestContext.WriteLine(HexPrint(ref Raw.AsRef(poly), 40));
             TestContext.WriteLine("Actual:");
             TestContext.WriteLine(HexPrint(ref actual, 40));
         }
-    }
-    public unsafe struct BablPolynomialRaw
-    {
-        public IntPtr eval;
-        public int degree;
-        public int scale;
-        public fixed double coeff[11];
-
-        public static ref BablPolynomialRaw AsRef(IntPtr ptr) =>
-            ref Unsafe.AsRef<BablPolynomialRaw>((void*)ptr);
-
-        public struct Big
+        unsafe struct Raw
         {
             public IntPtr eval;
             public int degree;
             public int scale;
-            public fixed double coeff[23];
+            public fixed double coeff[11];
+
+            public static ref Raw AsRef(IntPtr ptr) =>
+                ref Unsafe.AsRef<Raw>((void*)ptr);
+
+            public struct Big
+            {
+                public IntPtr eval;
+                public int degree;
+                public int scale;
+                public fixed double coeff[23];
+            }
         }
     }
 }
