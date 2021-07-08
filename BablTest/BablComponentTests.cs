@@ -3,14 +3,10 @@
 using NUnit.Framework;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 using static BablTest.BablHandler;
+using static BablTest.Util;
 
 namespace BablTest
 {
@@ -59,25 +55,6 @@ namespace BablTest
             var actual = Babl.Component("A") as BablComponent;
 
             CheckSame(expected, actual);
-        }
-
-        static void CheckSame(Raw expected, BablComponent actual)
-        {
-            Assert.AreEqual(Marshal.PtrToStringAnsi(expected.Instance.Name), actual.Name);
-            Assert.AreEqual(expected.Instance.Id, actual.Id);
-            Assert.AreEqual(expected.Luma, actual.Luma);
-            Assert.AreEqual(expected.Chroma, actual.Chroma);
-            Assert.AreEqual(expected.Alpha, actual.Alpha);
-        }
-        static void CheckSame(BablComponent expected, BablComponent actual)
-        {
-            Assert.AreEqual(expected.Name, actual.Name);
-            Assert.AreEqual(expected.Id, actual.Id);
-            Assert.AreEqual(expected.Luma, actual.Luma);
-            Assert.AreEqual(expected.Chroma, actual.Chroma);
-            Assert.AreEqual(expected.Alpha, actual.Alpha);
-
-            Assert.AreSame(expected, actual);
         }
 
         unsafe struct Raw

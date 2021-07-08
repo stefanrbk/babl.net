@@ -2,7 +2,12 @@
 
 namespace babl
 {
-    internal class BablType : Babl
+#if DEBUG
+    public
+#else
+    internal
+#endif
+    class BablType : Babl
     {
         static readonly BablDb db = new();
 

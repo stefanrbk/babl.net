@@ -16,24 +16,16 @@ namespace babl
     {
         internal const int Magic = 0xbab100;
 #if DEBUG
-        public
+        public int Id;
+        public string Name;
+        public string Docs;
+        public object Creator;
 #else
-        internal
+        internal int Id;
+        internal string Name;
+        internal string Docs;
+        internal object Creator;
 #endif
-        int Id;
-#if DEBUG
-        public
-#else
-        internal
-# endif
-        string Name;
-#if DEBUG
-        public
-#else
-        internal
-#endif
-        string Docs;
-
         internal Babl(string name, int id, string docs)
         {
             Name = name;
