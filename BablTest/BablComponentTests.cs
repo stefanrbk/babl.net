@@ -14,6 +14,7 @@ using static BablTest.BablHandler;
 
 namespace BablTest
 {
+    [TestFixture(TestOf = typeof(BablComponent))]
     public unsafe class BablComponentTests
     {
         [Test, Category(Info), Order(1)]
@@ -26,7 +27,7 @@ namespace BablTest
         [Test, Category(Parity), Order(2)]
         public void NewCbTest()
         {
-            var expected = Marshal.PtrToStructure<BablComponentRaw>(BablComponentNew(__arglist("Cb", "id", 10032, "chroma", IntPtr.Zero)));
+            var expected = Marshal.PtrToStructure<Raw>(BablComponentNew(__arglist("Cb", "id", 10032, "chroma", IntPtr.Zero)));
 
             var actual = (BablComponent)Babl.ComponentNew(name: "Cb", id: BablId.Cb, chroma: true);
 
@@ -36,7 +37,7 @@ namespace BablTest
         [Test, Category(Parity), Order(2)]
         public void NewYTest()
         {
-            var expected = Marshal.PtrToStructure<BablComponentRaw>(BablComponentNew(__arglist("Y", "id", 10001, "luma", IntPtr.Zero)));
+            var expected = Marshal.PtrToStructure<Raw>(BablComponentNew(__arglist("Y", "id", 10001, "luma", IntPtr.Zero)));
             var actual = (BablComponent)Babl.ComponentNew(name: "Y", id: BablId.GrayLinear, luma: true);
 
             CheckSame(expected, actual);
@@ -60,7 +61,7 @@ namespace BablTest
             CheckSame(expected, actual);
         }
 
-        static void CheckSame(BablComponentRaw expected, BablComponent actual)
+        static void CheckSame(Raw expected, BablComponent actual)
         {
             Assert.AreEqual(Marshal.PtrToStringAnsi(expected.Instance.Name), actual.Name);
             Assert.AreEqual(expected.Instance.Id, actual.Id);
@@ -79,7 +80,7 @@ namespace BablTest
             Assert.AreSame(expected, actual);
         }
 
-        public unsafe struct BablComponentRaw
+        unsafe struct Raw
         {
             public Instance Instance;
             public bool Luma;
