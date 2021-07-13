@@ -55,5 +55,10 @@ namespace babl
 
         public override bool Equals(object? obj) =>
             obj is BablType babl && Equals(babl);
+
+#if DEBUG
+        public static void Remove(BablType type) =>
+            db.Remove(type);
+#endif
     }
 }

@@ -5,6 +5,8 @@ namespace babl
 {
 #if DEBUG
     public
+#else
+    internal
 #endif
         class BablDb
     {
@@ -26,7 +28,7 @@ namespace babl
             lock(mutex)
             {
                 if (babl.Id != 0)
-                    ids.Add((int)babl.Id, babl);
+                    ids.Add(babl.Id, babl);
                 names.Add(babl.Name, babl);
                 babls.Add(babl);
             }
@@ -44,5 +46,27 @@ namespace babl
             foreach (var babl in babls)
                 action(babl);
         }
+
+#if DEBUG
+        public void Remove(Babl babl)
+        {
+            lock (mutex)
+            {
+                foreach (var name in names)
+                    if (name.Value.Equals(babl))
+                    {
+                        names.Remove(name.Key);
+                        break;
+                    }
+                foreach (var id in ids)
+                    if (id.Value.Equals(babl))
+                    {
+                        ids.Remove(id.Key);
+                        break;
+                    }
+                babls.Remove(babl);
+            }
+        }
+#endif
     }
 }

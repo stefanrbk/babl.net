@@ -4,6 +4,8 @@ namespace babl
 {
 #if DEBUG
     public
+#else
+    internal
 #endif
         class BablComponent : Babl
     {
@@ -32,25 +34,15 @@ namespace babl
         }
 
 #if DEBUG
-        public
+        public bool Luma { get; }
+        public bool Chroma { get; }
+        public bool Alpha { get; }
 #else
-        internal
+        internal bool Luma { get; }
+        internal bool Chroma { get; }
+        internal bool Alpha { get; }
 #endif
-        bool Luma { get; }
-
-#if DEBUG
-        public
-#else
-        internal
-#endif
-        bool Chroma { get; }
-
-#if DEBUG
-        public
-#else
-        internal
-#endif
-        bool Alpha { get; }
+       
 
         internal static Babl? Find(int id) =>
             db.Find(id);
@@ -69,6 +61,8 @@ namespace babl
 
 
 #if DEBUG
+        public static void Remove(BablComponent component) => 
+            db.Remove(component);
         public
 #else
         internal

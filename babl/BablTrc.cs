@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace babl
 {
+#if DEBUG
+    public
+#else
+    internal
+#endif
     abstract class BablTrc : Babl
     {
         protected const int MaxTrcs = 100;
@@ -89,5 +94,20 @@ namespace babl
                 return MathF.Pow(value, (float)gamma);
             return 0;
         }
+#if DEBUG
+        public static void RemoveTrc(BablTrc trc)
+        {
+            var i = 0;
+            for (; i < trcDb.Length; i++)
+                if (trcDb[i] is not null)
+                    if (trcDb[i]!.Equals(trc))
+                    {
+                        trcDb[i] = null;
+                        break;
+                    }
+            for (; i < trcDb.Length - 1; i++)
+                trcDb[i] = trcDb[i+1];
+        }
+#endif
     }
 }
