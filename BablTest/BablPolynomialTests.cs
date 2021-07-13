@@ -30,7 +30,7 @@ namespace BablTest
         [TestCase(2.2)]
         [TestCase(1.0)]
         [TestCase(1.8)]
-        [Category(Parity), Order(2)]
+        [BaseParity]
         public void ApproximateGammaTest(double gamma)
         {
             var x0 = 0.5 / 255.0;

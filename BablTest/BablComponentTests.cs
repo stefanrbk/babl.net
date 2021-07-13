@@ -1,6 +1,7 @@
 ﻿using babl;
 
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 using System;
 using System.Runtime.InteropServices;
@@ -13,14 +14,14 @@ namespace BablTest
     [TestFixture(TestOf = typeof(BablComponent))]
     public unsafe class BablComponentTests
     {
-        [Test, Category(Info), Order(1)]
+        [BaseInfo, Test]
         public void RegisteredComponents()
         {
             TestContext.WriteLine("Initially registered BablComponents:");
             babl.BablComponent.ForEach(b => TestContext.WriteLine(b.Name));
         }
 
-        [Test, Category(Parity), Order(2)]
+        [BaseParity, Test]
         public void NewCbTest()
         {
             var expected = Marshal.PtrToStructure<Raw>(BablComponentNew(__arglist("Cb", "id", 10032, "chroma", IntPtr.Zero)));
@@ -30,7 +31,7 @@ namespace BablTest
             CheckSame(expected, actual);
         }
 
-        [Test, Category(Parity), Order(2)]
+        [BaseParity, Test]
         public void NewYTest()
         {
             var expected = Marshal.PtrToStructure<Raw>(BablComponentNew(__arglist("Y", "id", 10001, "luma", IntPtr.Zero)));
@@ -39,7 +40,7 @@ namespace BablTest
             CheckSame(expected, actual);
         }
 
-        [Test, Category(Identity), Order(3)]
+        [BaseIdentity, Test]
         public void NewReturnsExistingComponent()
         {
             var expected = Babl.ComponentNew(name: "B'", id: BablId.BlueNonlinear, luma: true, chroma: true);
@@ -48,7 +49,7 @@ namespace BablTest
             CheckSame(expected as BablComponent, actual as BablComponent);
         }
 
-        [Test, Category(Identity), Order(3)]
+        [BaseIdentity, Test]
         public void RetrieveAlphaTest()
         {
             var expected = Babl.ComponentNew(name: "A") as BablComponent;
