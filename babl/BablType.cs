@@ -2,7 +2,12 @@
 
 namespace babl
 {
-    internal class BablType : Babl
+#if DEBUG
+    public
+#else
+    internal
+#endif
+    class BablType : Babl
     {
         static readonly BablDb db = new();
 
@@ -14,6 +19,17 @@ namespace babl
         public BablType(string name, BablId id, int bits, string docs = "") :
             this(name, (int)id, bits, docs)
         { }
+
+        public static Babl New(string name = "", BablId id = 0, int bits = 0, string docs = "") =>
+            New(name, (int)id, bits, docs);
+
+        public static Babl New(string name = "", int id = 0, int bits = 0, string docs = "")
+        {
+            return (id != 0
+                ? Find(id)
+                : Find(name))
+                ?? db.Insert(new BablType(name, id, bits, docs));
+        }
 
         public int Bits { get; }
 
