@@ -343,10 +343,8 @@ namespace babl
         {
             throw new NotImplementedException();
         }
-        public static void Type(string name)
-        {
-            throw new NotImplementedException();
-        }
+        public static Babl Type(string name) =>
+            BablType.Find(name) ?? throw new ArgumentException("BablType does not exist", nameof(name));
         public static void TypeClassForEach(BablEachFunc eachFunc)
         {
             throw new NotImplementedException();
