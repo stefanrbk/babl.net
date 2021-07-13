@@ -58,8 +58,8 @@ namespace BablTest
             var instance = tType.GetField("Instance");
 
             var expectedFields = typeof(T).GetFields()
-                .Where(f => f.Name != "Instance")
-                .Concat(typeof(BablHandler.Instance).GetFields().Where(f => f.Name is not "ClassType" and not "Creator"))
+                .Where(f => f.Name != "Instance" && !f.Name.StartsWith('_'))
+                .Concat(typeof(BablHandler.Instance).GetFields().Where(f => !f.Name.StartsWith('_')))
                 .ToList();
 
             foreach (var field in expectedFields)
@@ -73,7 +73,7 @@ namespace BablTest
                     Assert.Fail("{0} does not exist in {1}",
                                 field.Name, uType.Name);
 
-                object expectedValue = null;
+                object? expectedValue = null;
                 if (field.DeclaringType == typeof(BablHandler.Instance))
                     if (type == typeof(string) && field.FieldType == typeof(IntPtr))
                         expectedValue = Marshal.PtrToStringAnsi((IntPtr)field.GetValue(instance.GetValue(expected)));
