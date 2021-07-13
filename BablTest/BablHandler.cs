@@ -264,9 +264,9 @@ namespace BablTest
 
         public struct Instance
         {
-            public int ClassType;
+            public int _ClassType;
             public int Id;
-            public IntPtr Creator;
+            public IntPtr _Creator;
             public IntPtr Name;
             public IntPtr Docs;
         }
