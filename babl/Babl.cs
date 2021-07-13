@@ -45,10 +45,6 @@ namespace babl
             BablType.InitBase();
         }
 
-        public static int Backtrack() 
-        {
-            throw new NotImplementedException();
-        }
         public static Babl Component(string name) =>
             BablComponent.Find(name) ?? throw new ArgumentException("BablComponent does not exist", nameof(name));
         public static Babl ComponentNew(string name = "", int id = 0, bool luma = false, bool chroma = false, bool alpha = false, string docs = "") =>
@@ -355,7 +351,7 @@ namespace babl
         }
         public static Babl TypeNew(string name = "", int id = 0, int bits = 0, string docs = "") =>
             BablType.New(name, id, bits, docs);
-        public static Babl TypeNew(string name = "", BablId id = 0, int bits = 0, string docs = "") =>
+        public static Babl TypeNew(BablId id, string name = "", int bits = 0, string docs = "") =>
             BablType.New(name, id, bits, docs);
 
         internal static void Assert(bool value, 
