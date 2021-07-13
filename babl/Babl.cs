@@ -355,10 +355,10 @@ namespace babl
         {
             throw new NotImplementedException();
         }
-        public static void TypeNew()
-        {
-            throw new NotImplementedException();
-        }
+        public static Babl TypeNew(string name = "", int id = 0, int bits = 0, string docs = "") =>
+            BablType.New(name, id, bits, docs);
+        public static Babl TypeNew(string name = "", BablId id = 0, int bits = 0, string docs = "") =>
+            BablType.New(name, id, bits, docs);
 
         internal static void Assert(bool value, 
                                     string message = "", 
