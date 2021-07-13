@@ -30,9 +30,28 @@ namespace BablTest
         }
 
         [Test, BaseParity]
-        public void NewReturnsExistingComponent()
+        public void NewU16Test()
         {
+            var expected = Marshal.PtrToStructure<Raw>(BablTypeNew(__arglist("u16", "id", BablId.U16, "bits", 16, 0)));
+            var actual = (BablType)Babl.TypeNew(name: "u16", id: BablId.U16, bits: 16);
 
+            CheckSame(expected, actual);
+        }
+
+        [Test, BaseParity]
+        public void NewReturnsExistingType()
+        {
+            var expected = Babl.TypeNew(name: "half", id: BablId.Half, bits: 16, docs: "IEEE 754 half precision.");
+            var actual = Babl.TypeNew(id: BablId.Half);
+        }
+
+        [BaseIdentity, Test]
+        public void RetrieveU32Test()
+        {
+            var expected = Babl.TypeNew(name: "u32", id: BablId.U32, bits: 32) as BablType;
+            var actual = Babl.Type("u32") as BablType;
+
+            CheckSame(expected, actual);
         }
 
         unsafe struct Raw
